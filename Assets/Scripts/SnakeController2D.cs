@@ -26,11 +26,14 @@ public class SnakeController2D : MonoBehaviour
     void Update()
     {
         HandleInput();
-        NHandleGridMomvemnt();
+        HandleGridMomvemnt();
        
     }
+    public void Setup()
+    {
 
-    private void NHandleGridMomvemnt()
+    }
+    private void HandleGridMomvemnt()
     {
         gridMoveTimer += Time.deltaTime;
 
@@ -39,7 +42,9 @@ public class SnakeController2D : MonoBehaviour
             gridPosition += gridMovedirection;
             gridMoveTimer -= gridMoveTimerMax;
             transform.position = new Vector3(gridPosition.x, gridPosition.y);
+            transform.eulerAngles = new Vector3(0, 0, GetAngleFromVector(gridMovedirection)-90);
         }
+        
     }
 
     private void HandleInput()
@@ -64,5 +69,12 @@ public class SnakeController2D : MonoBehaviour
             gridMovedirection.y = 0;
             gridMovedirection.x = 1;
         }
+    }
+    
+    private float GetAngleFromVector(Vector2Int dir)
+    {
+        float n = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        if (n < 0) n += 360;
+        return n;
     }
 }
