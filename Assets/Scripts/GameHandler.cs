@@ -7,7 +7,7 @@ public class GameHandler : MonoBehaviour
 {
     [SerializeField]
     private SnakeController2D snake;
-    //i would rather make level static
+
     private LevelGrid levelGrid;
 
     // Start is called before the first frame update
@@ -17,6 +17,9 @@ public class GameHandler : MonoBehaviour
         Debug.Log("Gamehandler.start");
 
         levelGrid = new LevelGrid(20, 20);
+
+        snake.Setup(levelGrid);
+        levelGrid.Setup(snake);
 
         //GameObject snakeHeadGameObject = new GameObject();
         //SpriteRenderer snakeSpriteRenderer = snakeHeadGameObject.AddComponent<SpriteRenderer>();
