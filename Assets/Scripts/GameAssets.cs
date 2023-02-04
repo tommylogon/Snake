@@ -5,7 +5,8 @@ using UnityEngine;
 public class GameAssets : MonoBehaviour
 {
     public static GameAssets instance;
-    public Sprite snakeHeadSprite;
+    public Sprite snakeHeadSprite; 
+    public Sprite snakeBodySprite;
     public Sprite foodSprite;
 
     private void Awake()
