@@ -14,6 +14,13 @@ public class SnakeController2D : MonoBehaviour
         Down
     }
 
+    private enum State
+    {
+        Alive,
+        Dead
+    }
+
+    private State state;
     private Direction gridMoveDirection;
     private Vector2Int gridPosition;
     private float gridMoveTimer;
@@ -26,21 +33,34 @@ public class SnakeController2D : MonoBehaviour
     private void Awake()
     {
         gridPosition = new Vector2Int(10, 10);
-        gridMoveDirection = Direction.Right;
-        snakeMovePositionList = new List<SnakeMovePosition>();
-        snakeBodyPartList = new List<SnakeBodyPart>();
         gridMoveTimerMax = .2f;
         gridMoveTimer = gridMoveTimerMax;
+        gridMoveDirection = Direction.Right;
 
-        snakeBodySize=0;
+        snakeMovePositionList = new List<SnakeMovePosition>();
+        snakeBodySize = 0;
+
+        snakeBodyPartList = new List<SnakeBodyPart>();
+        state = State.Alive;
+        
+
+        
     }
  
 
     // Update is called once per frame
     void Update()
     {
-        HandleInput();
-        HandleGridMomvemnt();
+        switch (state)
+        {
+            case State.Alive:
+                HandleInput();
+                HandleGridMomvemnt();
+                break;
+            case State.Dead:
+                break;
+        }
+        
        
     }
     public void Setup(LevelGrid levelGrid)
@@ -76,6 +96,8 @@ public class SnakeController2D : MonoBehaviour
 
             gridPosition += gridMoveDirectionVector;
 
+            gridPosition = levelGrid.ValidateGridPosition(gridPosition);
+
             if (levelGrid.TrySnakeEatFood(gridPosition))
             {
                 snakeBodySize++;
@@ -87,10 +109,24 @@ public class SnakeController2D : MonoBehaviour
                 snakeMovePositionList.RemoveAt(snakeMovePositionList.Count - 1);
             }
 
+            UpdateSnakeBodyParts();
+
+
+            foreach (SnakeBodyPart snakeBodyPart in snakeBodyPartList)
+            {
+                Vector2Int snakeBodypartGridPosition = snakeBodyPart.GetGridPosition();
+                if(gridPosition == snakeBodypartGridPosition)
+                {
+                    //Game over
+                    CMDebug.TextPopup("Game over", transform.position);
+                    state = State.Dead;
+                }
+            }
+
             transform.position = new Vector3(gridPosition.x, gridPosition.y);
             transform.eulerAngles = new Vector3(0, 0, GetAngleFromVector(gridMoveDirectionVector) -90);
 
-            UpdateSnakeBodyParts();
+            
            
         }
         
@@ -212,6 +248,11 @@ public class SnakeController2D : MonoBehaviour
                     break;
             }
             transform.eulerAngles = new Vector3(0, 0, angle);
+        }
+
+        public Vector2Int GetGridPosition()
+        {
+            return snakeMovePosition.GetGridPosition();
         }
     }
 
