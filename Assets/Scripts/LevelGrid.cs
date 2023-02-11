@@ -8,6 +8,7 @@ public class LevelGrid
     private Vector2Int foodGridPosition;
     private int width;
     private int height;
+    private List<GameObject> foodList; 
     private GameObject foodGameObject;
     private SnakeController2D snake;
 
@@ -15,6 +16,8 @@ public class LevelGrid
     {
         this.width = width;
         this.height = height;
+
+        foodList = new List<GameObject>();
 
         
 
@@ -42,17 +45,24 @@ public class LevelGrid
         foodGameObject.GetComponent<SpriteRenderer>().sprite = GameAssets.instance.foodSprite;
 
         foodGameObject.transform.position = new Vector3(foodGridPosition.x, foodGridPosition.y);
+        
+
     }
     
     public bool TrySnakeEatFood(Vector2Int snakeGridposition)
     {
-        if(snakeGridposition == foodGridPosition)
-        {
-            Object.Destroy(foodGameObject);
-            SpawnFood();
-            CMDebug.TextPopupMouse("Snake ate food");
-            return true;
-        }
+        
+            if (snakeGridposition == foodGridPosition)
+            {
+                Object.Destroy(foodGameObject);
+                SpawnFood();
+                CMDebug.TextPopupMouse("Snake ate food");
+                GameHandler.AddScore();
+                return true;
+            }
+        
+
+        
         return false;
     }
     public Vector2Int ValidateGridPosition(Vector2Int gridPosition)

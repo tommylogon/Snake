@@ -5,12 +5,21 @@ using CodeMonkey;
 using CodeMonkey.Utils;
 public class GameHandler : MonoBehaviour
 {
+    private static GameHandler instance;
+
     [SerializeField]
     private SnakeController2D snake;
 
     private LevelGrid levelGrid;
 
-    // Start is called before the first frame update
+    private static int score;
+    
+
+    private void Awake()
+    {
+        instance = this;
+        InitializeStatic();
+    }
 
     void Start()
     {
@@ -21,14 +30,25 @@ public class GameHandler : MonoBehaviour
         snake.Setup(levelGrid);
         levelGrid.Setup(snake);
 
-        //GameObject snakeHeadGameObject = new GameObject();
-        //SpriteRenderer snakeSpriteRenderer = snakeHeadGameObject.AddComponent<SpriteRenderer>();
-        //snakeSpriteRenderer.sprite = GameAssets.instance.snakeHeadSprite;
+       
+
+    }
+    private static void InitializeStatic()
+    {
+        score = 0;
+    }
+    public static int GetScore()
+    {
+        return score;
     }
 
-    // Update is called once per frame
-    void Update()
+    public static void AddScore()
     {
-        
+        score += 100;
+    }
+
+    public static void SnakeDied()
+    {
+        GameOverWindow.ShowStatic();
     }
 }
