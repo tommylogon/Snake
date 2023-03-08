@@ -8,6 +8,9 @@ public class GameHandler : MonoBehaviour
     private static GameHandler instance;
 
     [SerializeField]
+    private int gridSize = 20;
+
+    [SerializeField]
     private SnakeController2D snake;
 
     private LevelGrid levelGrid;
@@ -25,7 +28,7 @@ public class GameHandler : MonoBehaviour
     {
         Debug.Log("Gamehandler.start");
 
-        levelGrid = new LevelGrid(20, 20);
+        levelGrid = new LevelGrid(gridSize, gridSize);
 
         snake.Setup(levelGrid);
         levelGrid.Setup(snake);
