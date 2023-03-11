@@ -26,19 +26,23 @@ public class SnakeController2D : MonoBehaviour
     private float gridMoveTimer;
     private float gridMoveTimerMax;
     private LevelGrid levelGrid;
+    [SerializeField]
     private int snakeBodySize;
     private List<SnakeMovePosition> snakeMovePositionList;
     private List<SnakeBodyPart> snakeBodyPartList;
+    SnakeMovePosition previousSnakeMovePosition = null;
+
+    private bool hasMovedSinceDirectionChanged = false;
 
     private void Awake()
     {
         gridPosition = new Vector2Int(10, 10);
-        gridMoveTimerMax = .2f;
+        gridMoveTimerMax = .5f;
         gridMoveTimer = gridMoveTimerMax;
         gridMoveDirection = Direction.Right;
 
         snakeMovePositionList = new List<SnakeMovePosition>();
-        snakeBodySize = 0;
+        //snakeBodySize = 0;
 
         snakeBodyPartList = new List<SnakeBodyPart>();
         state = State.Alive;
@@ -71,10 +75,11 @@ public class SnakeController2D : MonoBehaviour
     {
         gridMoveTimer += Time.deltaTime;
 
-        if (gridMoveTimer > gridMoveTimerMax)
+        if (gridMoveTimer > gridMoveTimerMax )
         {
+
             gridMoveTimer -= gridMoveTimerMax;
-            SnakeMovePosition previousSnakeMovePosition = null;
+            
 
             if(snakeMovePositionList.Count > 0)
             {
@@ -84,18 +89,23 @@ public class SnakeController2D : MonoBehaviour
             SnakeMovePosition snakeMovePosition = new SnakeMovePosition(previousSnakeMovePosition, gridPosition, gridMoveDirection);
             snakeMovePositionList.Insert(0,snakeMovePosition);
 
-            Vector2Int gridMoveDirectionVector;
-            switch (gridMoveDirection)
-            {
-                default:
-                case Direction.Right:   gridMoveDirectionVector = new Vector2Int(1, 0);break;
-                case Direction.Left:    gridMoveDirectionVector = new Vector2Int(-1, 0); break;
-                case Direction.Up:      gridMoveDirectionVector = new Vector2Int(0, 1); break;
-                case Direction.Down:    gridMoveDirectionVector = new Vector2Int(0, -1); break;
-            }
+            Vector2Int gridMoveDirectionVector = new Vector2Int(0,0);
+            
+
+                switch (gridMoveDirection)
+                {
+                    default:
+                    case Direction.Right: gridMoveDirectionVector = new Vector2Int(1, 0); break;
+                    case Direction.Left: gridMoveDirectionVector = new Vector2Int(-1, 0); break;
+                    case Direction.Up: gridMoveDirectionVector = new Vector2Int(0, 1); break;
+                    case Direction.Down: gridMoveDirectionVector = new Vector2Int(0, -1); break;
+                }
+                
+               
+            
+
 
             gridPosition += gridMoveDirectionVector;
-
             gridPosition = levelGrid.ValidateGridPosition(gridPosition);
 
             if (levelGrid.TrySnakeEatFood(gridPosition))
@@ -109,6 +119,11 @@ public class SnakeController2D : MonoBehaviour
                 snakeMovePositionList.RemoveAt(snakeMovePositionList.Count - 1);
             }
 
+
+            if (snakeBodyPartList.Count<snakeBodySize )
+            {
+                CreateSnakeBody();
+            }
             UpdateSnakeBodyParts();
 
 
@@ -175,7 +190,7 @@ public class SnakeController2D : MonoBehaviour
     }
     private void CreateSnakeBody()
     {
-        snakeBodyPartList.Add(new SnakeBodyPart(snakeBodyPartList.Count));
+            snakeBodyPartList.Add(new SnakeBodyPart(snakeBodyPartList.Count));                
     }
 
     private void UpdateSnakeBodyParts()
