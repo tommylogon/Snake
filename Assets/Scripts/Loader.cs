@@ -9,8 +9,11 @@ public static class Loader
 
     public enum Scene
     {
-        GameScene,
-        Loading
+        Small,
+        Medium,
+        Loading,
+        MainMenu
+
     }
 
     private static Action loaderCallbakckAction;

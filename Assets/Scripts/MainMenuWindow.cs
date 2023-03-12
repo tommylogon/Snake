@@ -18,7 +18,7 @@ public class MainMenuWindow : MonoBehaviour
         transform.Find("HowToPlaySub").GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         transform.Find("MainSub").GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
-        transform.Find("MainSub").Find("PlayBtn").GetComponent<Button_UI>().ClickFunc = () => Loader.Load(Loader.Scene.GameScene);
+        transform.Find("MainSub").Find("PlayBtn").GetComponent<Button_UI>().ClickFunc = () => Loader.Load(Loader.Scene.Medium);
         transform.Find("MainSub").Find("QuitBtn").GetComponent<Button_UI>().ClickFunc = () => Application.Quit();
         transform.Find("MainSub").Find("HowToPlayBtn").GetComponent<Button_UI>().ClickFunc = () => ShowSub(Sub.HowToPlay);
 

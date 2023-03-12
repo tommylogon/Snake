@@ -16,7 +16,9 @@ public class GameHandler : MonoBehaviour
     private LevelGrid levelGrid;
 
     private static int score;
-    
+
+    [SerializeField,Min(1)]
+    private int MaxInitializedFoodAtATime;
 
     private void Awake()
     {
@@ -31,7 +33,7 @@ public class GameHandler : MonoBehaviour
         levelGrid = new LevelGrid(gridSize, gridSize);
 
         snake.Setup(levelGrid);
-        levelGrid.Setup(snake);
+        levelGrid.Setup(snake, MaxInitializedFoodAtATime);
 
        
 

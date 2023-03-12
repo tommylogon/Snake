@@ -32,7 +32,6 @@ public class SnakeController2D : MonoBehaviour
     private List<SnakeBodyPart> snakeBodyPartList;
     SnakeMovePosition previousSnakeMovePosition = null;
 
-    private bool hasMovedSinceDirectionChanged = false;
 
     private void Awake()
     {
