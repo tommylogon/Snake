@@ -24,6 +24,8 @@ public class SnakeController2D : MonoBehaviour
     private Direction gridMoveDirection;
     private Vector2Int gridPosition;
     private float gridMoveTimer;
+
+    [SerializeField]
     private float gridMoveTimerMax;
     private LevelGrid levelGrid;
     [SerializeField]
@@ -31,6 +33,10 @@ public class SnakeController2D : MonoBehaviour
     private List<SnakeMovePosition> snakeMovePositionList;
     private List<SnakeBodyPart> snakeBodyPartList;
     SnakeMovePosition previousSnakeMovePosition = null;
+    [SerializeField]
+    bool speedIncreases;
+    [SerializeField]
+    float speedincreasePerFood;
 
 
     private void Awake()
@@ -111,6 +117,12 @@ public class SnakeController2D : MonoBehaviour
             {
                 snakeBodySize++;
                 CreateSnakeBody();
+
+                if (speedIncreases)
+                {
+                    
+                    gridMoveTimerMax /= 1.1f;
+                }
             }
 
             if (snakeMovePositionList.Count >= snakeBodySize + 1)

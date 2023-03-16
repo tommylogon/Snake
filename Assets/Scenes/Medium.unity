@@ -762,8 +762,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverBehaviourType: 1
-  hoverBehaviour_Color_Enter: {r: 0, g: 1, b: 0, a: 1}
-  hoverBehaviour_Color_Exit: {r: 0.08009967, g: 0.6792453, b: 0.08009967, a: 1}
+  hoverBehaviour_Color_Enter: {r: 0.72156864, g: 0.5254902, b: 0.043137256, a: 1}
+  hoverBehaviour_Color_Exit: {r: 0.8962264, g: 0.6372014, b: 0, a: 1}
   hoverBehaviour_Image: {fileID: 666342725}
   hoverBehaviour_Sprite_Exit: {fileID: 0}
   hoverBehaviour_Sprite_Enter: {fileID: 0}
@@ -887,8 +887,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278244923
-  m_fontColor: {r: 0.23179843, g: 0.8396226, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1217,7 +1217,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 825c35f273511b3418655b220eda9ab0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridMoveTimerMax: 0
   snakeBodySize: 1
+  speedIncreases: 1
+  speedincreasePerFood: 0.9
 --- !u!212 &1895097775
 SpriteRenderer:
   m_ObjectHideFlags: 0
