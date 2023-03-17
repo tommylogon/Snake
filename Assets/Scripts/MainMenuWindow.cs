@@ -22,14 +22,26 @@ public class MainMenuWindow : MonoBehaviour
         transform.Find("LevelSelectSub").GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 
         transform.Find("MainSub").Find("PlayBtn").GetComponent<Button_UI>().ClickFunc = () => ShowSub(Sub.LevelSelect);
+        transform.Find("MainSub").Find("PlayBtn").GetComponent<Button_UI>().AddButtonSounds();
+
         transform.Find("LevelSelectSub").Find("SmallBtn").GetComponent<Button_UI>().ClickFunc = () => Loader.Load(Loader.Scene.Small);
+        transform.Find("LevelSelectSub").Find("SmallBtn").GetComponent<Button_UI>().AddButtonSounds();
+
         transform.Find("LevelSelectSub").Find("MediumBtn").GetComponent<Button_UI>().ClickFunc = () => Loader.Load(Loader.Scene.Medium);
+        transform.Find("LevelSelectSub").Find("MediumBtn").GetComponent<Button_UI>().AddButtonSounds();
 
         transform.Find("MainSub").Find("QuitBtn").GetComponent<Button_UI>().ClickFunc = () => Application.Quit();
+        transform.Find("MainSub").Find("QuitBtn").GetComponent<Button_UI>().AddButtonSounds();
+        
         transform.Find("MainSub").Find("HowToPlayBtn").GetComponent<Button_UI>().ClickFunc = () => ShowSub(Sub.HowToPlay);
+        transform.Find("MainSub").Find("HowToPlayBtn").GetComponent<Button_UI>().AddButtonSounds();
 
         transform.Find("HowToPlaySub").Find("BackBtn").GetComponent<Button_UI>().ClickFunc = () => ShowSub(Sub.Main);
+        transform.Find("HowToPlaySub").Find("BackBtn").GetComponent<Button_UI>().AddButtonSounds();
+
         transform.Find("LevelSelectSub").Find("BackBtn").GetComponent<Button_UI>().ClickFunc = () => ShowSub(Sub.Main);
+        transform.Find("LevelSelectSub").Find("BackBtn").GetComponent<Button_UI>().AddButtonSounds();
+
 
 
         ShowSub(Sub.Main);

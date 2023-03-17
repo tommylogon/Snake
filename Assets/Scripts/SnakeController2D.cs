@@ -84,6 +84,8 @@ public class SnakeController2D : MonoBehaviour
         {
 
             gridMoveTimer -= gridMoveTimerMax;
+
+           SoundManager.PlaySound(SoundManager.Sound.SnakeMove);
             
 
             if(snakeMovePositionList.Count > 0)
@@ -115,6 +117,7 @@ public class SnakeController2D : MonoBehaviour
 
             if (levelGrid.TrySnakeEatFood(gridPosition))
             {
+                SoundManager.PlaySound(SoundManager.Sound.SnakeEat);
                 snakeBodySize++;
                 CreateSnakeBody();
 
@@ -143,9 +146,11 @@ public class SnakeController2D : MonoBehaviour
                 Vector2Int snakeBodypartGridPosition = snakeBodyPart.GetGridPosition();
                 if(gridPosition == snakeBodypartGridPosition)
                 {
-                    
+                    SoundManager.PlaySound(SoundManager.Sound.SnakeDie);
                     state = State.Dead;
                     GameHandler.SnakeDied();
+
+                    
                 }
             }
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey;
 using CodeMonkey.Utils;
+using System;
+
 public class GameHandler : MonoBehaviour
 {
     private static GameHandler instance;
@@ -13,9 +15,11 @@ public class GameHandler : MonoBehaviour
     [SerializeField]
     private SnakeController2D snake;
 
+    
+
     private LevelGrid levelGrid;
 
-    private static int score;
+    
 
     [SerializeField,Min(1)]
     private int MaxInitializedFoodAtATime;
@@ -23,7 +27,11 @@ public class GameHandler : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        InitializeStatic();
+        Score.InitializeStatic();
+
+        PlayerPrefs.SetInt("highscore", 100);
+
+        PlayerPrefs.Save();
     }
 
     void Start()
@@ -38,22 +46,42 @@ public class GameHandler : MonoBehaviour
        
 
     }
-    private static void InitializeStatic()
-    {
-        score = 0;
-    }
-    public static int GetScore()
-    {
-        return score;
-    }
 
-    public static void AddScore()
+    private void Update()
     {
-        score += 100;
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (IsGamePaused())
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
+            
+        }
     }
+  
 
     public static void SnakeDied()
     {
+        Score.TrySetNewHighscore();
         GameOverWindow.ShowStatic();
+    }
+    public static void ResumeGame()
+    {
+        PauseWindow.HideStatic();
+        Time.timeScale = 1f;
+    }
+    public static void PauseGame()
+    {
+        PauseWindow.ShowStatic();
+        Time.timeScale = 0f;
+    }
+
+    public static bool IsGamePaused()
+    {
+        return Time.timeScale == 0f;
     }
 }

@@ -64,7 +64,7 @@ public class LevelGrid
             foodList.Remove(foodGameObject);
                 Object.Destroy(foodGameObject);
                 SpawnFood();
-                GameHandler.AddScore();
+                Score.AddScore();
                 return true;
             }
         
