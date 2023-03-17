@@ -1346,7 +1346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSize: 20
   snake: {fileID: 1895097774}
-  MaxInitializedFoodAtATime: 1
+  MaxInitializedFoodAtATime: 10
 --- !u!4 &821165041
 Transform:
   m_ObjectHideFlags: 0
@@ -1904,8 +1904,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridMoveTimerMax: 0
   snakeBodySize: 0
-  speedIncreases: 0
-  speedincreasePerFood: 0
+  speedIncreases: 1
+  speedincreasePerFood: 0.9
 --- !u!212 &1895097775
 SpriteRenderer:
   m_ObjectHideFlags: 0

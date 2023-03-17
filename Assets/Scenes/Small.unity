@@ -1963,8 +1963,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridMoveTimerMax: 0
   snakeBodySize: 0
-  speedIncreases: 0
-  speedincreasePerFood: 0
+  speedIncreases: 1
+  speedincreasePerFood: 0.9
 --- !u!212 &1895097775
 SpriteRenderer:
   m_ObjectHideFlags: 0
