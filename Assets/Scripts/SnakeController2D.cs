@@ -4,6 +4,7 @@ using UnityEngine;
 using CodeMonkey;
 using CodeMonkey.Utils;
 using System;
+using TMPro;
 
 public class SnakeController2D : MonoBehaviour
 {
@@ -258,13 +259,28 @@ public class SnakeController2D : MonoBehaviour
     {
         private SnakeMovePosition snakeMovePosition;
         private Transform transform;
+        private GameObject textGameObject;
+        private TextMeshProUGUI textmesh;
 
         public SnakeBodyPart(int bodyIndex)
         {
             GameObject snakeBodyGameobject = new GameObject("SnakeBody", typeof(SpriteRenderer));
+
             snakeBodyGameobject.GetComponent<SpriteRenderer>().sprite = GameAssets.instance.snakeBodySprite;
             snakeBodyGameobject.GetComponent<SpriteRenderer>().sortingOrder = -bodyIndex;
+
+            textGameObject = new GameObject("Letter " + bodyIndex.ToString(), typeof(TextMeshProUGUI));
+            textmesh = textGameObject.GetComponent<TextMeshProUGUI>();
+            textmesh.text = "A";
+            textmesh.fontSize = 5;
+            textmesh.alignment = TextAlignmentOptions.Center;
+            textGameObject.transform.parent = snakeBodyGameobject.transform;
+            textGameObject.transform.localPosition = Vector3.zero;
+            textGameObject.transform.localRotation = Quaternion.identity;
+
+
             transform = snakeBodyGameobject.transform;
+
 
         }
         public void SetSnakeMovePosition(SnakeMovePosition snakeMovePosition)
@@ -288,7 +304,7 @@ public class SnakeController2D : MonoBehaviour
                     switch (snakeMovePosition.GetPreviousDirection())
                     {
                         default: angle = -90;break;
-                        case Direction.Down: angle = 45; break;
+                        case Direction.Down: angle = 225; break;
                         case Direction.Up: angle = -45; break;
 
                     }
@@ -298,8 +314,8 @@ public class SnakeController2D : MonoBehaviour
                     switch (snakeMovePosition.GetPreviousDirection())
                     {
                         default: angle = 180; break;
-                        case Direction.Left: angle = 180-45; break;
-                        case Direction.Right: angle = 180+45; break;
+                        case Direction.Left: angle = 135; break;
+                        case Direction.Right: angle = 225; break;
 
                     }
                     break;
@@ -307,7 +323,7 @@ public class SnakeController2D : MonoBehaviour
                     switch (snakeMovePosition.GetPreviousDirection())
                     {
                         default: angle = 90; break;
-                        case Direction.Down: angle = -45; break;
+                        case Direction.Down: angle = 135; break;
                         case Direction.Up: angle = 45; break;
 
                     }
@@ -320,6 +336,10 @@ public class SnakeController2D : MonoBehaviour
         public Vector2Int GetGridPosition()
         {
             return snakeMovePosition.GetGridPosition();
+        }
+        public void SetText(string text)
+        {
+            textmesh.text = text;
         }
     }
 
