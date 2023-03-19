@@ -6,13 +6,27 @@ using UnityEngine.UI;
 
 public class ScoreWindow : MonoBehaviour
 {
+
+    private static ScoreWindow instance;
+
+    [SerializeField]
     private TextMeshProUGUI scoreText;
+    [SerializeField]
     private TextMeshProUGUI highScoreText;
 
     private void Awake()
     {
-        scoreText = transform.Find("scoreText").GetComponent<TextMeshProUGUI>();
-        highScoreText = transform.Find("HighScoreText").GetComponent<TextMeshProUGUI>();
+        instance = this;
+        if(scoreText == null)
+        {
+            scoreText = transform.Find("scoreText").GetComponent<TextMeshProUGUI>();
+        }
+        if (highScoreText == null)
+        {
+            highScoreText = transform.Find("HighScoreText").GetComponent<TextMeshProUGUI>();
+        }
+        
+        
 
         Score.OnHighscoreChanged += Score_OnHighscoreChanged;
         UpdateHighscore();
@@ -32,5 +46,14 @@ public class ScoreWindow : MonoBehaviour
     {
         int highscore = Score.GetHighscore();
         highScoreText.text = "HIGHSCORE\n" + highscore.ToString();
+    }
+
+    public static void HideStatic()
+    {
+        instance.gameObject.SetActive(false);
+    }
+    public static void ShoweStatic()
+    {
+        instance.gameObject.SetActive(true);
     }
 }

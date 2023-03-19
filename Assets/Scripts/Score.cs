@@ -36,6 +36,7 @@ public static class Score
         {
             PlayerPrefs.SetInt("highscore", score);
             if (OnHighscoreChanged != null) OnHighscoreChanged(null, EventArgs.Empty);
+            PlayerPrefs.Save();
             return true;
         }
         return false;

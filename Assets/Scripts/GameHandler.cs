@@ -7,7 +7,7 @@ using System;
 
 public class GameHandler : MonoBehaviour
 {
-    private static GameHandler instance;
+    public static GameHandler instance;
 
     [SerializeField]
     private int gridSize = 20;
@@ -28,10 +28,6 @@ public class GameHandler : MonoBehaviour
     {
         instance = this;
         Score.InitializeStatic();
-
-        PlayerPrefs.SetInt("highscore", 100);
-
-        PlayerPrefs.Save();
     }
 
     void Start()
@@ -66,8 +62,9 @@ public class GameHandler : MonoBehaviour
 
     public static void SnakeDied()
     {
-        Score.TrySetNewHighscore();
-        GameOverWindow.ShowStatic();
+        
+        GameOverWindow.ShowStatic(Score.TrySetNewHighscore(), Timer.instance.IsTimedOut());
+        ScoreWindow.HideStatic();
     }
     public static void ResumeGame()
     {

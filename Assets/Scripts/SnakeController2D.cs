@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey;
 using CodeMonkey.Utils;
+using System;
 
 public class SnakeController2D : MonoBehaviour
 {
@@ -35,12 +36,15 @@ public class SnakeController2D : MonoBehaviour
     SnakeMovePosition previousSnakeMovePosition = null;
     [SerializeField]
     bool speedIncreases;
-    [SerializeField]
-    double speedincreasePerFood;
+    bool hasMoved;
+
+    public static SnakeController2D instance;
+    
 
 
     private void Awake()
     {
+        instance=this;
         gridPosition = new Vector2Int(10, 10);
         gridMoveTimerMax = .5f;
         gridMoveTimer = gridMoveTimerMax;
@@ -82,10 +86,12 @@ public class SnakeController2D : MonoBehaviour
 
         if (gridMoveTimer > gridMoveTimerMax )
         {
-
+            hasMoved = true;
             gridMoveTimer -= gridMoveTimerMax;
 
-           SoundManager.PlaySound(SoundManager.Sound.SnakeMove);
+            ChangeSpeed(false);
+
+            SoundManager.PlaySound(SoundManager.Sound.SnakeMove);
             
 
             if(snakeMovePositionList.Count > 0)
@@ -121,11 +127,8 @@ public class SnakeController2D : MonoBehaviour
                 snakeBodySize++;
                 CreateSnakeBody();
 
-                if (speedIncreases)
-                {
-                    
-                    gridMoveTimerMax *= 0.9f;
-                }
+                ChangeSpeed(true);
+                Timer.instance.AddTime();
             }
 
             if (snakeMovePositionList.Count >= snakeBodySize + 1)
@@ -146,9 +149,7 @@ public class SnakeController2D : MonoBehaviour
                 Vector2Int snakeBodypartGridPosition = snakeBodyPart.GetGridPosition();
                 if(gridPosition == snakeBodypartGridPosition)
                 {
-                    SoundManager.PlaySound(SoundManager.Sound.SnakeDie);
-                    state = State.Dead;
-                    GameHandler.SnakeDied();
+                    SnakeDied();
 
                     
                 }
@@ -163,24 +164,41 @@ public class SnakeController2D : MonoBehaviour
         
     }
 
+    public void SnakeDied()
+    {
+        SoundManager.PlaySound(SoundManager.Sound.SnakeDie);
+        state = State.Dead;
+        GameHandler.SnakeDied();
+    }
+
     private void HandleInput()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow) && gridMoveDirection != Direction.Down)
+        if (hasMoved)
         {
-            gridMoveDirection = Direction.Up;
+            
+
+            if (Input.GetKeyDown(KeyCode.UpArrow) && gridMoveDirection != Direction.Down)
+            {
+                gridMoveDirection = Direction.Up;
+                hasMoved = false;
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow) && gridMoveDirection != Direction.Up)
+            {
+                gridMoveDirection = Direction.Down;
+                hasMoved = false;
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow) && gridMoveDirection != Direction.Right)
+            {
+                gridMoveDirection = Direction.Left;
+                hasMoved = false;
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow) && gridMoveDirection != Direction.Left)
+            {
+                gridMoveDirection = Direction.Right;
+                hasMoved = false;
+            }
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow) && gridMoveDirection != Direction.Up)
-        {
-            gridMoveDirection = Direction.Down;
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && gridMoveDirection != Direction.Right)
-        {
-            gridMoveDirection = Direction.Left;
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow) && gridMoveDirection != Direction.Left)
-        {
-            gridMoveDirection = Direction.Right;
-        }
+            
     }
     
     private float GetAngleFromVector(Vector2Int dir)
@@ -218,6 +236,24 @@ public class SnakeController2D : MonoBehaviour
         } 
     }
 
+    public void ChangeSpeed(bool increase)
+    {
+        if (speedIncreases)
+        {
+
+            if (!increase)
+            {
+                gridMoveTimerMax *= 1.1; ;
+            }
+            else
+            {
+                gridMoveTimerMax *= 0.5;
+            }
+
+            gridMoveTimerMax = Mathf.Clamp((float)gridMoveTimerMax, 0.05f, 0.5f);
+
+        }
+    }
     private class SnakeBodyPart
     {
         private SnakeMovePosition snakeMovePosition;
