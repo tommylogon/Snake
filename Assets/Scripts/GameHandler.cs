@@ -14,19 +14,21 @@ public class GameHandler : MonoBehaviour
 
     [SerializeField]
     private SnakeController2D snake;
-
     
-
     private LevelGrid levelGrid;
-
     
-
     [SerializeField,Min(1)]
     private int MaxInitializedFoodAtATime;
+
+    [SerializeField]
+    private List<Word> words;
 
     private void Awake()
     {
         instance = this;
+        
+
+
         Score.InitializeStatic();
     }
 

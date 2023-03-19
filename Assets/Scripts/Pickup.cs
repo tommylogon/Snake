@@ -4,20 +4,12 @@ using UnityEngine;
 
 public class Pickup : MonoBehaviour
 {
-    Sprite image;
     char letter;
     Vector2Int gridPosition;
-    bool revealed;
 
-    // Start is called before the first frame update
-    void Start()
+    public Pickup(char assignedLetter, Vector2Int gridPos)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        letter = assignedLetter;
+        gridPosition = gridPos;
     }
 }
