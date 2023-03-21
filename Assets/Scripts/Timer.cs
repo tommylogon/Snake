@@ -40,7 +40,7 @@ public class Timer : MonoBehaviour
         if (timeLeft <= 0)
         {
             timeOut = true;
-            SnakeController2D.instance.SnakeDied();
+            SnakeController2D.instance.PlayerDied();
         }
 
         

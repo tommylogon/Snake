@@ -28,4 +28,14 @@ public class Word
         }
 
     }
+
+    public int GetWordLengt()
+    {
+        return letters.Length;
+    }
+
+    public string GetWord()
+    {
+        return letters;
+    }
 }

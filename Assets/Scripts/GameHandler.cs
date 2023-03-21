@@ -13,7 +13,7 @@ public class GameHandler : MonoBehaviour
     private int gridSize = 20;
 
     [SerializeField]
-    private SnakeController2D snake;
+    private SnakeController2D player;
     
     private LevelGrid levelGrid;
     
@@ -21,12 +21,16 @@ public class GameHandler : MonoBehaviour
     private int MaxInitializedFoodAtATime;
 
     [SerializeField]
-    private List<Word> words;
+    private List<Word> wordsList;
+
+    [SerializeField]
+    private Word selectedWord;
 
     private void Awake()
     {
         instance = this;
-        
+        wordsList = new List<Word>();
+        InitialWords();
 
 
         Score.InitializeStatic();
@@ -37,9 +41,9 @@ public class GameHandler : MonoBehaviour
         Debug.Log("Gamehandler.start");
 
         levelGrid = new LevelGrid(gridSize, gridSize);
-
-        snake.Setup(levelGrid);
-        levelGrid.Setup(snake, MaxInitializedFoodAtATime);
+        selectedWord = wordsList[UnityEngine.Random.Range(0, wordsList.Count)];
+        player.Setup(levelGrid, selectedWord);
+        levelGrid.Setup(player, selectedWord);
 
        
 
@@ -62,7 +66,7 @@ public class GameHandler : MonoBehaviour
     }
   
 
-    public static void SnakeDied()
+    public static void PlayerDied()
     {
         
         GameOverWindow.ShowStatic(Score.TrySetNewHighscore(), Timer.instance.IsTimedOut());
@@ -82,5 +86,14 @@ public class GameHandler : MonoBehaviour
     public static bool IsGamePaused()
     {
         return Time.timeScale == 0f;
+    }
+
+    public void InitialWords()
+    {
+        wordsList.Add(new Word("bear", "A furry animal that hibernates in the winter."));
+        wordsList.Add(new Word("apple", "A small fruit that is usually red or green."));
+        wordsList.Add(new Word("bee", "A flying insect that makes honey."));
+        wordsList.Add(new Word("parrot", "A type of bird that is often kept as a pet."));
+        wordsList.Add(new Word("rose", "A type of flower that is often associated with love."));
     }
 }

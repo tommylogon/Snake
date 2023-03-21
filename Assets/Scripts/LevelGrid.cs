@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey;
 using CodeMonkey.Utils;
-public class LevelGrid 
+public class LevelGrid  : MonoBehaviour
 {
-    private Vector2Int foodGridPosition;
+    private Vector2Int pickupGridPosition;
     private int width;
     private int height;
-    private List<GameObject> foodList; 
-    private GameObject foodGameObject;
+    private List<GameObject> pickupList; 
+    private GameObject pickupGameObject;
     private SnakeController2D snake;
-    private int spawnedFoods;
+    private int spawnedPickUps;
 
 
     public LevelGrid(int width, int height)
@@ -19,40 +19,51 @@ public class LevelGrid
         this.width = width;
         this.height = height;
 
-        foodList = new List<GameObject>();
+        pickupList = new List<GameObject>();
     }
 
 
-    public void Setup(SnakeController2D snake, int maxFood)
+    public void Setup(SnakeController2D snake, Word newWord)
     {
         this.snake = snake;
-        while(spawnedFoods < maxFood)
+
+        foreach(char c in newWord.GetWord().ToCharArray())
         {
-            SpawnFood();
-            spawnedFoods++;
+            SpawnFood(c);
+            spawnedPickUps++;
         }
-        
-        
+
+        while (spawnedPickUps < newWord.GetWordLengt())
+        {
+             
+            SpawnFood(GameAssets.instance.RandomLetter());
+            spawnedPickUps++;
+        }
+
+
     }
-    private void SpawnFood()
+
+    private void SpawnFood(char letter)
     {
 
 
         do
         {
-            foodGridPosition = new Vector2Int(Random.Range(0, width), Random.Range(0, height));
-        } while (snake.GetFullSnakeGridPositionList().IndexOf(foodGridPosition) != -1 || GetFullFoodGridPositionList().IndexOf(foodGridPosition) != -1);
+            pickupGridPosition = new Vector2Int(Random.Range(0, width), Random.Range(0, height));
+        } while (snake.GetFullSnakeGridPositionList().IndexOf(pickupGridPosition) != -1 || GetFullFoodGridPositionList().IndexOf(pickupGridPosition) != -1);
 
-       
 
-        foodGameObject = new GameObject("Food", typeof(SpriteRenderer));
-        foodGameObject.GetComponent<SpriteRenderer>().sprite = GameAssets.instance.foodSprite;
+        pickupGameObject = Instantiate( GameAssets.instance.pickupPrefab);
+        pickupGameObject.GetComponent<Pickup>().SetLetter(letter);
+        pickupGameObject.GetComponent<Pickup>().setPos(pickupGridPosition);
+        //pickupGameObject = new GameObject("Puckup", typeof(SpriteRenderer));
+        //pickupGameObject.GetComponent<SpriteRenderer>().sprite = GameAssets.instance.foodSprite;
 
-        foodGameObject.transform.position = new Vector3(foodGridPosition.x, foodGridPosition.y);
+        pickupGameObject.transform.position = new Vector3(pickupGridPosition.x, pickupGridPosition.y);
 
-        foodList.Add(foodGameObject);
+        pickupList.Add(pickupGameObject);
 
-        foodGameObject = null;
+        pickupGameObject = null;
     }
     
     public bool TrySnakeEatFood(Vector2Int snakeGridposition)
@@ -60,10 +71,11 @@ public class LevelGrid
         
             if (GetFullFoodGridPositionList().IndexOf(snakeGridposition) > -1)
             {
-            foodGameObject = foodList[GetFullFoodGridPositionList().IndexOf(snakeGridposition)];
-            foodList.Remove(foodGameObject);
-                Object.Destroy(foodGameObject);
-                SpawnFood();
+            pickupGameObject = pickupList[GetFullFoodGridPositionList().IndexOf(snakeGridposition)];
+            snake.TryRevealLetter(pickupGameObject.GetComponent<Pickup>().GetLetter());
+            pickupList.Remove(pickupGameObject);
+                Object.Destroy(pickupGameObject);
+                //SpawnFood();
                 Score.AddScore();
                 return true;
             }
@@ -96,7 +108,7 @@ public class LevelGrid
     public List<Vector2Int> GetFullFoodGridPositionList()
     {
         List<Vector2Int> gridPositionList = new List<Vector2Int>();
-        foreach ( var food in foodList)
+        foreach ( var food in pickupList)
         {
             Vector2Int pos = new Vector2Int();
             pos.x = (int)food.transform.position.x;
