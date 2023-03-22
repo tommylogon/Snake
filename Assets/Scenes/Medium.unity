@@ -171,7 +171,7 @@ MonoBehaviour:
   snakeBodySprite: {fileID: 21300000, guid: f96cd5920ebe4714cb80a1f324ee7d55, type: 3}
   foodSprite: {fileID: 21300000, guid: d2adde0f54d7b9b40a7a9de3df09d02a, type: 3}
   pickupPrefab: {fileID: 2468228333121093777, guid: 773dfccdf746f894588a263834144a40, type: 3}
-  PlayerPrefab: {fileID: 7158052268378449720, guid: 7689714e6db810848b4a89075a539c9e, type: 3}
+  PlayerFollowPrefab: {fileID: 788280092}
   soundAudioClipArray:
   - sound: 0
     audioClip: {fileID: 8300000, guid: 0994c12e202f342459a4212e7287f7e8, type: 3}
@@ -362,6 +362,11 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &788280092 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7158052268378449720, guid: 7689714e6db810848b4a89075a539c9e, type: 3}
+  m_PrefabInstance: {fileID: 3364164948615001318}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &821165039
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,7 +399,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSize: 20
-  snake: {fileID: 1895097774}
+  player: {fileID: 1895097774}
   MaxInitializedFoodAtATime: 5
 --- !u!4 &821165041
 Transform:
@@ -525,17 +530,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1106820063 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2468228332276396451, guid: 773dfccdf746f894588a263834144a40, type: 3}
-  m_PrefabInstance: {fileID: 2468228331172727420}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1484243533
 GameObject:
   m_ObjectHideFlags: 0
@@ -762,7 +756,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f96cd5920ebe4714cb80a1f324ee7d55, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1a69f784d7fa4e340b2bef56f6fa0ba3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -795,10 +789,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -1076577157522567531, guid: 773dfccdf746f894588a263834144a40, type: 3}
-      propertyPath: text
-      value: 
-      objectReference: {fileID: 1106820063}
     - target: {fileID: 2468228333121093777, guid: 773dfccdf746f894588a263834144a40, type: 3}
       propertyPath: m_Name
       value: Pickup
@@ -809,7 +799,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2468228333121093779, guid: 773dfccdf746f894588a263834144a40, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: -2.34
       objectReference: {fileID: 0}
     - target: {fileID: 2468228333121093779, guid: 773dfccdf746f894588a263834144a40, type: 3}
       propertyPath: m_LocalPosition.y
@@ -862,7 +852,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6468252865448702139, guid: 7689714e6db810848b4a89075a539c9e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: -3.3400002
       objectReference: {fileID: 0}
     - target: {fileID: 6468252865448702139, guid: 7689714e6db810848b4a89075a539c9e, type: 3}
       propertyPath: m_LocalPosition.y

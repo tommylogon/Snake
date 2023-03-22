@@ -11,7 +11,7 @@ public class GameAssets : MonoBehaviour
     public Sprite foodSprite;
 
     public GameObject pickupPrefab;
-    public GameObject PlayerPrefab;
+    public GameObject PlayerFollowPrefab;
 
     public SoundAudioClip[] soundAudioClipArray;
 

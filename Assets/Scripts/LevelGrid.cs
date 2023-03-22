@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey;
 using CodeMonkey.Utils;
-public class LevelGrid  : MonoBehaviour
+public class LevelGrid 
 {
     private Vector2Int pickupGridPosition;
     private int width;
     private int height;
     private List<GameObject> pickupList; 
     private GameObject pickupGameObject;
-    private SnakeController2D snake;
+    private SnakeController2D player;
     private int spawnedPickUps;
 
 
@@ -19,15 +19,16 @@ public class LevelGrid  : MonoBehaviour
         this.width = width;
         this.height = height;
 
-        pickupList = new List<GameObject>();
+        
     }
 
 
-    public void Setup(SnakeController2D snake, Word newWord)
+    public void Setup(SnakeController2D player, Word newWord)
     {
-        this.snake = snake;
+        this.player = player;
+        pickupList = new List<GameObject>();
 
-        foreach(char c in newWord.GetWord().ToCharArray())
+        foreach (char c in newWord.GetWord().ToCharArray())
         {
             SpawnFood(c);
             spawnedPickUps++;
@@ -40,7 +41,6 @@ public class LevelGrid  : MonoBehaviour
             spawnedPickUps++;
         }
 
-
     }
 
     private void SpawnFood(char letter)
@@ -50,30 +50,31 @@ public class LevelGrid  : MonoBehaviour
         do
         {
             pickupGridPosition = new Vector2Int(Random.Range(0, width), Random.Range(0, height));
-        } while (snake.GetFullSnakeGridPositionList().IndexOf(pickupGridPosition) != -1 || GetFullFoodGridPositionList().IndexOf(pickupGridPosition) != -1);
+        } while (player.GetFullSnakeGridPositionList().IndexOf(pickupGridPosition) != -1 || GetFullPickupGridPositionList().IndexOf(pickupGridPosition) != -1);
 
 
-        pickupGameObject = Instantiate( GameAssets.instance.pickupPrefab);
-        pickupGameObject.GetComponent<Pickup>().SetLetter(letter);
-        pickupGameObject.GetComponent<Pickup>().setPos(pickupGridPosition);
+       pickupGameObject = GameAssets.Instantiate(GameAssets.instance.pickupPrefab);
+       Pickup pickup = pickupGameObject.GetComponent<Pickup>();
+       pickup.SetLetter(letter);
+       pickup.setPos(pickupGridPosition);
         //pickupGameObject = new GameObject("Puckup", typeof(SpriteRenderer));
         //pickupGameObject.GetComponent<SpriteRenderer>().sprite = GameAssets.instance.foodSprite;
 
-        pickupGameObject.transform.position = new Vector3(pickupGridPosition.x, pickupGridPosition.y);
+       pickupGameObject.transform.position = new Vector3(pickupGridPosition.x, pickupGridPosition.y);
 
         pickupList.Add(pickupGameObject);
 
         pickupGameObject = null;
     }
     
-    public bool TrySnakeEatFood(Vector2Int snakeGridposition)
+    public bool TrySnakeEatFood(Vector2Int PlayerGridposition)
     {
-        
-            if (GetFullFoodGridPositionList().IndexOf(snakeGridposition) > -1)
+        pickupGameObject = GetPickupFromPlayerPosition(PlayerGridposition);
+            if (pickupGameObject != null)
             {
-            pickupGameObject = pickupList[GetFullFoodGridPositionList().IndexOf(snakeGridposition)];
-            snake.TryRevealLetter(pickupGameObject.GetComponent<Pickup>().GetLetter());
-            pickupList.Remove(pickupGameObject);
+            
+                player.TryRevealLetter(pickupGameObject.GetComponent<Pickup>().GetLetter());
+                pickupList.Remove(pickupGameObject);
                 Object.Destroy(pickupGameObject);
                 //SpawnFood();
                 Score.AddScore();
@@ -105,17 +106,35 @@ public class LevelGrid  : MonoBehaviour
 
         return gridPosition;
     }
-    public List<Vector2Int> GetFullFoodGridPositionList()
+    private List<Vector2Int> GetFullPickupGridPositionList()
     {
         List<Vector2Int> gridPositionList = new List<Vector2Int>();
-        foreach ( var food in pickupList)
-        {
-            Vector2Int pos = new Vector2Int();
-            pos.x = (int)food.transform.position.x;
-            pos.y = (int)food.transform.position.y;
-            gridPositionList.Add(pos);
-        }
+        
+            foreach (var pickup in pickupList)
+            {
+                Vector2Int pos = new Vector2Int();
+                pos.x = (int)pickup.transform.position.x;
+                pos.y = (int)pickup.transform.position.y;
+                gridPositionList.Add(pos);
+            }
+        
+        
 
         return gridPositionList;
+    }
+
+    private GameObject GetPickupFromPlayerPosition(Vector2Int playerGridposition)
+    {
+        
+        foreach(var pickup in pickupList)
+        {
+            if(pickup.GetComponent<Pickup>().GetPos() == playerGridposition)
+            {
+                return pickup;
+            }
+        }
+
+
+        return null;
     }
 }

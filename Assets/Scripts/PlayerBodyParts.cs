@@ -7,19 +7,23 @@ using static SnakeController2D;
 public class PlayerBodyParts : MonoBehaviour
 {
     private PlayereMovePosition playerMovePosition;
-    private Transform transform;
+    
+    [SerializeField]
     private GameObject textGameObject;
-    private TextMeshPro textmesh;
 
-    public PlayerBodyParts(int bodyIndex, char letter)
+    [SerializeField]
+    private TextMeshPro letterText;
+
+    public void Setup(int bodyIndex, char letter)
     {
-        GameObject playerBodyGameobject = Instantiate(GameAssets.instance.PlayerPrefab);// new GameObject("SnakeBody", typeof(SpriteRenderer));
+       
+        // new GameObject("SnakeBody", typeof(SpriteRenderer));
         
         //snakeBodyGameobject.GetComponent<SpriteRenderer>().sprite = GameAssets.instane.snakeBodySprite;
 
 
-        playerBodyGameobject.GetComponent<SpriteRenderer>().sortingOrder = -bodyIndex;
-        transform = playerBodyGameobject.transform;
+        GetComponent<SpriteRenderer>().sortingOrder = -bodyIndex;
+        letterText.text = letter.ToString();
 
 
     }
@@ -71,6 +75,7 @@ public class PlayerBodyParts : MonoBehaviour
                 break;
         }
         transform.eulerAngles = new Vector3(0, 0, angle);
+        textGameObject.transform.eulerAngles = new Vector3(0, 0, angle - angle);
     }
 
     public Vector2Int GetGridPosition()
@@ -79,6 +84,6 @@ public class PlayerBodyParts : MonoBehaviour
     }
     public void SetText(string text)
     {
-        textmesh.text = text;
+        letterText.text = text;
     }
 }

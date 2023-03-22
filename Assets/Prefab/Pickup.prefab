@@ -270,3 +270,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde8506b15018e046b1a53cef9ff4c68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  text: {fileID: 2468228332276396451}
+  gridPosition: {x: 0, y: 0}

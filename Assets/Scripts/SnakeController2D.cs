@@ -33,7 +33,7 @@ public class SnakeController2D : MonoBehaviour
     [SerializeField]
     private int snakeBodySize;
     private List<PlayereMovePosition> playerMovePositionList;
-    private List<PlayerBodyParts> playereBodyPartList;
+    private List<PlayerBodyParts> playerBodyPartList;
     PlayereMovePosition previousPlayerMovePosition = null;
     [SerializeField]
     bool speedIncreases;
@@ -54,7 +54,7 @@ public class SnakeController2D : MonoBehaviour
         playerMovePositionList = new List<PlayereMovePosition>();
         //snakeBodySize = 0;
 
-        playereBodyPartList = new List<PlayerBodyParts>();
+        playerBodyPartList = new List<PlayerBodyParts>();
         state = State.Alive;
         
 
@@ -81,6 +81,7 @@ public class SnakeController2D : MonoBehaviour
     {
         this.levelGrid = levelGrid;
         currentWord = newHiddenWord;
+        snakeBodySize = currentWord.GetWordLengt();
     }
     private void HandleGridMomvemnt()
     {
@@ -126,7 +127,7 @@ public class SnakeController2D : MonoBehaviour
             if (levelGrid.TrySnakeEatFood(gridPosition))
             {
                 SoundManager.PlaySound(SoundManager.Sound.PlayerPickup);
-                snakeBodySize++;
+                //snakeBodySize++;
                 //CreateSnakeBody();
 
                 ChangeSpeed(true);
@@ -139,18 +140,18 @@ public class SnakeController2D : MonoBehaviour
             }
 
 
-            if (playereBodyPartList.Count<snakeBodySize )
+            if (playerBodyPartList.Count<snakeBodySize )
             {
                 foreach(char c in currentWord.GetWord())
                 {
-                    CreatePlayerBody(c);
+                    CreatePlayerBodyPart(c);
                 }
 
             }
             UpdateSnakeBodyParts();
 
 
-            foreach (PlayerBodyParts snakeBodyPart in playereBodyPartList)
+            foreach (PlayerBodyParts snakeBodyPart in playerBodyPartList)
             {
                 Vector2Int snakeBodypartGridPosition = snakeBodyPart.GetGridPosition();
                 if(gridPosition == snakeBodypartGridPosition)
@@ -170,7 +171,7 @@ public class SnakeController2D : MonoBehaviour
         
     }
 
-    internal void TryRevealLetter(char v)
+    public void TryRevealLetter(char v)
     {
         //find if word has letter
         //find segment with letter and enable textmesh
@@ -234,17 +235,27 @@ public class SnakeController2D : MonoBehaviour
 
         return gridPositionList;
     }
-    private void CreatePlayerBody(char letter)
+    private void CreatePlayerBodyPart(char letter)
     {
-            playereBodyPartList.Add(new PlayerBodyParts(playereBodyPartList.Count,letter));                
+        if(GameAssets.instance.PlayerFollowPrefab != null)
+        {
+            GameObject playerBodyPartObject = Instantiate(GameAssets.instance.PlayerFollowPrefab);
+            PlayerBodyParts playerBodyPart = playerBodyPartObject.GetComponent<PlayerBodyParts>();
+            playerBodyPart.Setup(playerBodyPartList.Count, letter);
+            playerBodyPartList.Add(playerBodyPart);
+        }
+                       
     }
 
     private void UpdateSnakeBodyParts()
     {
-        for (int i = 0; i < playereBodyPartList.Count; i++)
+        for (int i = 0; i < playerBodyPartList.Count; i++)
         {
-            
-        playereBodyPartList[i].SetSnakeMovePosition(playerMovePositionList[i]);
+            if(playerMovePositionList[i] != null)
+            {
+                playerBodyPartList[i].SetSnakeMovePosition(playerMovePositionList[i]);
+
+            }
         } 
     }
 
