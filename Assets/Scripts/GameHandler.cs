@@ -99,5 +99,25 @@ public class GameHandler : MonoBehaviour
         wordsList.Add(new Word("BEE", "A flying insect that makes honey."));
         wordsList.Add(new Word("PARROT", "A type of bird that is often kept as a pet."));
         wordsList.Add(new Word("ROSE", "A type of flower that is often associated with love."));
+        wordsList.Add(new Word("CAR", "A vehicle used for transportation."));
+        wordsList.Add(new Word("DOG", "A domesticated mammal often kept as a pet."));
+        wordsList.Add(new Word("OCEAN", "A large body of saltwater."));
+        wordsList.Add(new Word("PHONE", "A device used for communication."));
+        wordsList.Add(new Word("HOUSE", "A building used for shelter."));
+        wordsList.Add(new Word("ELEPHANT", "A large mammal with a trunk and tusks."));
+        wordsList.Add(new Word("GUITAR", "A musical instrument with strings."));
+        wordsList.Add(new Word("WATER", "A clear liquid essential for life."));
+        wordsList.Add(new Word("BOOK", "A written or printed work."));
+        wordsList.Add(new Word("LION", "A large carnivorous mammal."));
+        wordsList.Add(new Word("PIZZA", "A dish made of dough, sauce, and toppings."));
+        wordsList.Add(new Word("SUN", "A star that provides light and heat."));
+        wordsList.Add(new Word("CHAIR", "A piece of furniture used for sitting."));
+        wordsList.Add(new Word("TREE", "A perennial plant with a single stem or trunk."));
+        wordsList.Add(new Word("MOUNTAIN", "A large natural elevation of the earth's surface."));
+        wordsList.Add(new Word("MUSIC", "An art form that uses sound and rhythm."));
+        wordsList.Add(new Word("HORSE", "A large four-legged mammal used for riding."));
+        wordsList.Add(new Word("KEYBOARD", "A device used for typing on a computer."));
+        wordsList.Add(new Word("MIRROR", "A reflective surface used for viewing oneself."));
+        wordsList.Add(new Word("PENCIL", "A writing tool used to make marks on paper."));
     }
 }
