@@ -5,14 +5,14 @@ using UnityEngine;
 public class Word 
 {
     string letters;
-    string description;
+    string hint;
     bool finished;
     float time;
 
     public Word(string newletters, string desc)
     {
         letters = newletters;
-        description = desc;
+        hint = desc;
         finished = false;
         time = 0;
 
@@ -37,5 +37,9 @@ public class Word
     public string GetWord()
     {
         return letters;
+    }
+    public string GetHint()
+    {
+        return hint;
     }
 }

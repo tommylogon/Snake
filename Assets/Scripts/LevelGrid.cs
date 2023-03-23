@@ -1,8 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CodeMonkey;
-using CodeMonkey.Utils;
+
+
 public class LevelGrid 
 {
     private Vector2Int pickupGridPosition;
@@ -13,6 +12,7 @@ public class LevelGrid
     private SnakeController2D player;
     private int spawnedPickUps;
 
+    
 
     public LevelGrid(int width, int height)
     {
@@ -33,8 +33,8 @@ public class LevelGrid
             SpawnFood(c);
             spawnedPickUps++;
         }
-
-        while (spawnedPickUps < newWord.GetWordLengt())
+        int dudsToSpawn = spawnedPickUps + newWord.GetWordLengt();
+        while (spawnedPickUps < dudsToSpawn)
         {
              
             SpawnFood(GameAssets.instance.RandomLetter());

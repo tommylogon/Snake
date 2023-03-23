@@ -4,6 +4,7 @@ using UnityEngine;
 using CodeMonkey;
 using CodeMonkey.Utils;
 using System;
+using TMPro;
 
 public class GameHandler : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class GameHandler : MonoBehaviour
     [SerializeField]
     private Word selectedWord;
 
+    [SerializeField]
+    private TextMeshPro hintText;
     private void Awake()
     {
         instance = this;
@@ -45,6 +48,7 @@ public class GameHandler : MonoBehaviour
         player.Setup(levelGrid, selectedWord);
         levelGrid.Setup(player, selectedWord);
 
+        hintText.text = selectedWord.GetHint();
        
 
     }
@@ -90,10 +94,10 @@ public class GameHandler : MonoBehaviour
 
     public void InitialWords()
     {
-        wordsList.Add(new Word("bear", "A furry animal that hibernates in the winter."));
-        wordsList.Add(new Word("apple", "A small fruit that is usually red or green."));
-        wordsList.Add(new Word("bee", "A flying insect that makes honey."));
-        wordsList.Add(new Word("parrot", "A type of bird that is often kept as a pet."));
-        wordsList.Add(new Word("rose", "A type of flower that is often associated with love."));
+        wordsList.Add(new Word("BEAR", "A furry animal that hibernates in the winter."));
+        wordsList.Add(new Word("APPLE", "A small fruit that is usually red or green."));
+        wordsList.Add(new Word("BEE", "A flying insect that makes honey."));
+        wordsList.Add(new Word("PARROT", "A type of bird that is often kept as a pet."));
+        wordsList.Add(new Word("ROSE", "A type of flower that is often associated with love."));
     }
 }

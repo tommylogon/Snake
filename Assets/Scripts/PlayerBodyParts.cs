@@ -6,13 +6,15 @@ using static SnakeController2D;
 
 public class PlayerBodyParts : MonoBehaviour
 {
-    private PlayereMovePosition playerMovePosition;
+    private PlayereMovePosition bodyPartMovePosition;
     
     [SerializeField]
     private GameObject textGameObject;
 
     [SerializeField]
     private TextMeshPro letterText;
+
+    
 
     public void Setup(int bodyIndex, char letter)
     {
@@ -25,11 +27,12 @@ public class PlayerBodyParts : MonoBehaviour
         GetComponent<SpriteRenderer>().sortingOrder = -bodyIndex;
         letterText.text = letter.ToString();
 
+        textGameObject.SetActive(false);
 
     }
     public void SetSnakeMovePosition(PlayereMovePosition snakeMovePosition)
     {
-        this.playerMovePosition = snakeMovePosition;
+        this.bodyPartMovePosition = snakeMovePosition;
         transform.position = new Vector3(snakeMovePosition.GetGridPosition().x, snakeMovePosition.GetGridPosition().y);
         float angle;
         switch (snakeMovePosition.GetDirection())
@@ -80,10 +83,32 @@ public class PlayerBodyParts : MonoBehaviour
 
     public Vector2Int GetGridPosition()
     {
-        return playerMovePosition.GetGridPosition();
+        if(bodyPartMovePosition != null)
+        {
+            return bodyPartMovePosition.GetGridPosition();
+        }
+        return new Vector2Int(10,10);
+        
     }
     public void SetText(string text)
     {
         letterText.text = text;
+    }
+
+    public bool RevealLetter(char c)
+    {
+        if (c.ToString() == letterText.text && !textGameObject.activeSelf)
+        {
+            Debug.Log("The right letter");
+            textGameObject.SetActive(true);
+            return true;
+        }
+        Debug.Log("Not the right letter");
+        return false;
+    }
+
+    public bool LetterIsRevealed()
+    {
+        return textGameObject.activeSelf;
     }
 }

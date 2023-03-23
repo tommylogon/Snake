@@ -153,8 +153,8 @@ public class SnakeController2D : MonoBehaviour
 
             foreach (PlayerBodyParts snakeBodyPart in playerBodyPartList)
             {
-                Vector2Int snakeBodypartGridPosition = snakeBodyPart.GetGridPosition();
-                if(gridPosition == snakeBodypartGridPosition)
+                Vector2Int bodypartGridPosition = snakeBodyPart.GetGridPosition();
+                if(gridPosition == bodypartGridPosition)
                 {
                     PlayerDied();
 
@@ -171,10 +171,36 @@ public class SnakeController2D : MonoBehaviour
         
     }
 
-    public void TryRevealLetter(char v)
+    public void TryRevealLetter(char letter)
     {
-        //find if word has letter
-        //find segment with letter and enable textmesh
+        bool allLettersRevealed = true;
+        bool thisLetterRevealed = false;
+
+        foreach(var bodyPart in playerBodyPartList)
+        {
+            if ( bodyPart.RevealLetter(letter) )
+            {
+                Score.AddScore();
+                thisLetterRevealed = true;
+                
+            }
+            if (!bodyPart.LetterIsRevealed())
+            {
+                allLettersRevealed = false;
+            }
+            if (thisLetterRevealed)
+            {
+                break;
+            }
+        }
+
+
+      
+        if (allLettersRevealed)
+        {
+            //win!
+        }
+      
     }
 
     public void PlayerDied()
@@ -251,7 +277,7 @@ public class SnakeController2D : MonoBehaviour
     {
         for (int i = 0; i < playerBodyPartList.Count; i++)
         {
-            if(playerMovePositionList[i] != null)
+            if(playerMovePositionList.Count > i)
             {
                 playerBodyPartList[i].SetSnakeMovePosition(playerMovePositionList[i]);
 
