@@ -17,6 +17,8 @@ public class GameAssets : MonoBehaviour
 
     public char[] alphabet = new char[26];
 
+
+
     private void Awake()
     {
         instance = this;

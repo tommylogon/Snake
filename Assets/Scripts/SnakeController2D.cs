@@ -11,7 +11,7 @@ public class SnakeController2D : MonoBehaviour
     public enum Direction
     {
         Left,
-        Right, 
+        Right,
         Up,
         Down
     }
@@ -29,13 +29,17 @@ public class SnakeController2D : MonoBehaviour
 
     [SerializeField]
     private double gridMoveTimerMax;
+
     private LevelGrid levelGrid;
+
     [SerializeField]
     private int snakeBodySize;
+
     private List<PlayereMovePosition> playerMovePositionList;
     private List<PlayerBodyParts> playerBodyPartList;
     PlayereMovePosition previousPlayerMovePosition = null;
     [SerializeField]
+
     bool speedIncreases;
     bool hasMoved;
 
@@ -45,37 +49,35 @@ public class SnakeController2D : MonoBehaviour
 
     private void Awake()
     {
-        instance=this;
+        instance = this;
         gridPosition = new Vector2Int(10, 10);
-        gridMoveTimerMax = .5f;
+        gridMoveTimerMax = .5;
         gridMoveTimer = gridMoveTimerMax;
         gridMoveDirection = Direction.Right;
 
         playerMovePositionList = new List<PlayereMovePosition>();
-        //snakeBodySize = 0;
+
 
         playerBodyPartList = new List<PlayerBodyParts>();
         state = State.Alive;
-        
 
-        
+
     }
- 
 
-    // Update is called once per frame
+
     void Update()
     {
         switch (state)
         {
             case State.Alive:
                 HandleInput();
-                HandleGridMomvemnt();
+                HandleGridMovement();
                 break;
             case State.Dead:
                 break;
         }
-        
-       
+
+
     }
     public void Setup(LevelGrid levelGrid, Word newHiddenWord)
     {
@@ -83,11 +85,11 @@ public class SnakeController2D : MonoBehaviour
         currentWord = newHiddenWord;
         snakeBodySize = currentWord.GetWordLengt();
     }
-    private void HandleGridMomvemnt()
+    private void HandleGridMovement()
     {
         gridMoveTimer += Time.deltaTime;
 
-        if (gridMoveTimer > gridMoveTimerMax )
+        if (gridMoveTimer > gridMoveTimerMax)
         {
             hasMoved = true;
             gridMoveTimer -= gridMoveTimerMax;
@@ -95,30 +97,30 @@ public class SnakeController2D : MonoBehaviour
             ChangeSpeed(false);
 
             SoundManager.PlaySound(SoundManager.Sound.PayerMove);
-            
 
-            if(playerMovePositionList.Count > 0)
+
+            if (playerMovePositionList.Count > 0)
             {
                 previousPlayerMovePosition = playerMovePositionList[0];
             }
 
             PlayereMovePosition snakeMovePosition = new PlayereMovePosition(previousPlayerMovePosition, gridPosition, gridMoveDirection);
-            playerMovePositionList.Insert(0,snakeMovePosition);
+            playerMovePositionList.Insert(0, snakeMovePosition);
 
-            Vector2Int gridMoveDirectionVector = new Vector2Int(0,0);
-            
+            Vector2Int gridMoveDirectionVector = new Vector2Int(0, 0);
 
-                switch (gridMoveDirection)
-                {
-                    default:
-                    case Direction.Right: gridMoveDirectionVector = new Vector2Int(1, 0); break;
-                    case Direction.Left: gridMoveDirectionVector = new Vector2Int(-1, 0); break;
-                    case Direction.Up: gridMoveDirectionVector = new Vector2Int(0, 1); break;
-                    case Direction.Down: gridMoveDirectionVector = new Vector2Int(0, -1); break;
-                }
-                
-               
-            
+
+            switch (gridMoveDirection)
+            {
+                default:
+                case Direction.Right: gridMoveDirectionVector = new Vector2Int(1, 0); break;
+                case Direction.Left: gridMoveDirectionVector = new Vector2Int(-1, 0); break;
+                case Direction.Up: gridMoveDirectionVector = new Vector2Int(0, 1); break;
+                case Direction.Down: gridMoveDirectionVector = new Vector2Int(0, -1); break;
+            }
+
+
+
 
 
             gridPosition += gridMoveDirectionVector;
@@ -127,11 +129,10 @@ public class SnakeController2D : MonoBehaviour
             if (levelGrid.TrySnakeEatFood(gridPosition))
             {
                 SoundManager.PlaySound(SoundManager.Sound.PlayerPickup);
-                //snakeBodySize++;
-                //CreateSnakeBody();
+
 
                 ChangeSpeed(true);
-                Timer.instance.AddTime();
+
             }
 
             if (playerMovePositionList.Count >= snakeBodySize + 1)
@@ -140,9 +141,9 @@ public class SnakeController2D : MonoBehaviour
             }
 
 
-            if (playerBodyPartList.Count<snakeBodySize )
+            if (playerBodyPartList.Count < snakeBodySize)
             {
-                foreach(char c in currentWord.GetWord())
+                foreach (char c in currentWord.GetWord())
                 {
                     CreatePlayerBodyPart(c);
                 }
@@ -154,53 +155,62 @@ public class SnakeController2D : MonoBehaviour
             foreach (PlayerBodyParts snakeBodyPart in playerBodyPartList)
             {
                 Vector2Int bodypartGridPosition = snakeBodyPart.GetGridPosition();
-                if(gridPosition == bodypartGridPosition)
+                if (gridPosition == bodypartGridPosition)
                 {
                     PlayerDied();
 
-                    
+
                 }
             }
 
             transform.position = new Vector3(gridPosition.x, gridPosition.y);
-            transform.eulerAngles = new Vector3(0, 0, GetAngleFromVector(gridMoveDirectionVector) -90);
+            transform.eulerAngles = new Vector3(0, 0, GetAngleFromVector(gridMoveDirectionVector) - 90);
 
-            
-           
+
+
         }
-        
+
     }
 
     public void TryRevealLetter(char letter)
     {
+
         bool allLettersRevealed = true;
         bool thisLetterRevealed = false;
 
-        foreach(var bodyPart in playerBodyPartList)
+
+        //i need to check the playerBodyPartList for all bodyparets that are revealed. some bodyparts have the same letters, but needs to only be counted once. if all letters are revealed we can do the win condition
+
+
+
+
+        foreach (var bodyPart in playerBodyPartList)
         {
-            if ( bodyPart.RevealLetter(letter) )
+            if (bodyPart.RevealLetter(letter))
             {
                 Score.AddScore();
                 thisLetterRevealed = true;
-                
+
+
             }
             if (!bodyPart.LetterIsRevealed())
             {
                 allLettersRevealed = false;
             }
-            if (thisLetterRevealed)
-            {
-                break;
-            }
+            
         }
 
 
-      
+
         if (allLettersRevealed)
         {
-            //win!
+            Timer.instance.PauseTimer(true);
+            GameHandler.PlayerWon();
+
+
+
         }
-      
+
     }
 
     public void PlayerDied()
@@ -214,7 +224,7 @@ public class SnakeController2D : MonoBehaviour
     {
         if (hasMoved)
         {
-            
+
 
             if (Input.GetKeyDown(KeyCode.UpArrow) && gridMoveDirection != Direction.Down)
             {
@@ -237,9 +247,9 @@ public class SnakeController2D : MonoBehaviour
                 hasMoved = false;
             }
         }
-            
+
     }
-    
+
     private float GetAngleFromVector(Vector2Int dir)
     {
         float n = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -254,7 +264,7 @@ public class SnakeController2D : MonoBehaviour
     public List<Vector2Int> GetFullSnakeGridPositionList()
     {
         List<Vector2Int> gridPositionList = new List<Vector2Int> { gridPosition };
-        foreach(PlayereMovePosition snakeMovePosition in playerMovePositionList)
+        foreach (PlayereMovePosition snakeMovePosition in playerMovePositionList)
         {
             gridPositionList.Add(snakeMovePosition.GetGridPosition());
         }
@@ -263,26 +273,26 @@ public class SnakeController2D : MonoBehaviour
     }
     private void CreatePlayerBodyPart(char letter)
     {
-        if(GameAssets.instance.PlayerFollowPrefab != null)
+        if (GameAssets.instance.PlayerFollowPrefab != null)
         {
             GameObject playerBodyPartObject = Instantiate(GameAssets.instance.PlayerFollowPrefab);
             PlayerBodyParts playerBodyPart = playerBodyPartObject.GetComponent<PlayerBodyParts>();
             playerBodyPart.Setup(playerBodyPartList.Count, letter);
             playerBodyPartList.Add(playerBodyPart);
         }
-                       
+
     }
 
     private void UpdateSnakeBodyParts()
     {
         for (int i = 0; i < playerBodyPartList.Count; i++)
         {
-            if(playerMovePositionList.Count > i)
+            if (playerMovePositionList.Count > i)
             {
                 playerBodyPartList[i].SetSnakeMovePosition(playerMovePositionList[i]);
 
             }
-        } 
+        }
     }
 
     public void ChangeSpeed(bool increase)

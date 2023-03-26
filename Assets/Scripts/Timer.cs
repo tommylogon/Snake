@@ -6,52 +6,81 @@ using System;
 
 public class Timer : MonoBehaviour
 {
-    public TextMeshProUGUI timerText;
-    private float startTime;
-    private float timeLeft;
-    [SerializeField]
-    private float timeToAdd;
-
     public static Timer instance;
 
-    private bool timeOut =false;
-    // Start is called before the first frame update
-    void Start()
+    public event EventHandler OnTimeOut;
+
+    [SerializeField] private float initialTime = 60f;
+    [SerializeField] private float timeToAdd = 10f;
+    [SerializeField] private TextMeshProUGUI timerText = null;
+
+    private float timeLeft = 0f;
+    private bool isTimeOut = false;
+
+    private bool isPaused = false;
+
+    private void Awake()
     {
         instance = this;
-        startTime = Time.time;
-        timeLeft = 60.0f; // Set the timer to 1 minute
+
+    }
+    void Start()
+    {
+
+
+
+        timeLeft = initialTime;
+
+
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        float timeElapsed = Time.time - startTime;
-        timeLeft = 60.0f - timeElapsed;
-
-        // Display the time left in the format of minute:second.millisecond
-        int minutes = Mathf.FloorToInt(timeLeft / 60.0f);
-        int seconds = Mathf.FloorToInt(timeLeft % 60.0f);
-        int milliseconds = Mathf.FloorToInt((timeLeft - Mathf.Floor(timeLeft)) * 1000);
+        if (isTimeOut || isPaused)
+        {
+            return;
+        }
+        timeLeft -= Time.deltaTime;
+        int minutes = Mathf.FloorToInt(timeLeft / 60);
+        int seconds = Mathf.FloorToInt(timeLeft % 60);
+        int milliseconds = Mathf.FloorToInt((timeLeft - Mathf.Floor(timeLeft)) * 1000f);
 
         timerText.text = string.Format("{0:00}:{1:00}.{2:000}", minutes, seconds, milliseconds);
 
-        // End the game when the timer reaches 0
+
         if (timeLeft <= 0)
         {
-            timeOut = true;
-            SnakeController2D.instance.PlayerDied();
+            isTimeOut = true;
+
+            OnTimeOut?.Invoke(this, EventArgs.Empty);
+
         }
 
-        
+
     }
     public void AddTime()
     {
-        startTime += timeToAdd;
+        initialTime += timeToAdd;
     }
 
     public bool IsTimedOut()
     {
-        return timeOut;
+        return isTimeOut;
     }
+
+    public void PauseTimer(bool state)
+    {
+        isPaused = state;
+    }
+
+
+    public float GetTimeLeft()
+    { 
+        return timeLeft; 
+    }
+
+
+
+
 }

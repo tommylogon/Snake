@@ -5,6 +5,7 @@ using CodeMonkey;
 using CodeMonkey.Utils;
 using System;
 using TMPro;
+using static GameOverWindow;
 
 public class GameHandler : MonoBehaviour
 {
@@ -15,10 +16,10 @@ public class GameHandler : MonoBehaviour
 
     [SerializeField]
     private SnakeController2D player;
-    
+
     private LevelGrid levelGrid;
-    
-    [SerializeField,Min(1)]
+
+    [SerializeField, Min(1)]
     private int MaxInitializedFoodAtATime;
 
     [SerializeField]
@@ -29,6 +30,9 @@ public class GameHandler : MonoBehaviour
 
     [SerializeField]
     private TextMeshPro hintText;
+
+
+
     private void Awake()
     {
         instance = this;
@@ -37,6 +41,10 @@ public class GameHandler : MonoBehaviour
 
 
         Score.InitializeStatic();
+
+      
+           
+        
     }
 
     void Start()
@@ -49,7 +57,8 @@ public class GameHandler : MonoBehaviour
         levelGrid.Setup(player, selectedWord);
 
         hintText.text = selectedWord.GetHint();
-       
+        Invoke("HideHintText", 5);
+        //Timer.instance.OnTimeOut += Timer_OnTimeOut;
 
     }
 
@@ -65,15 +74,32 @@ public class GameHandler : MonoBehaviour
             {
                 PauseGame();
             }
-            
+
         }
     }
-  
+
+    private void Timer_OnTimeOut(object sender, EventArgs e)
+    {
+        PlayerDied();
+    }
 
     public static void PlayerDied()
     {
+        Timer.instance.PauseTimer(true);
+
+        if (Score.TrySetNewHighscore())
+        {
+            GameOverWindow.ShowStatic(GameOverType.NewHighscore);
+        }
+        else if (Timer.instance.IsTimedOut())
+        {
+            GameOverWindow.ShowStatic(GameOverType.TimedOut);
+
+        }
+        //GameOverWindow.ShowStatic(Score.TrySetNewHighscore(), Timer.instance.IsTimedOut());
+
         
-        GameOverWindow.ShowStatic(Score.TrySetNewHighscore(), Timer.instance.IsTimedOut());
+
         ScoreWindow.HideStatic();
     }
     public static void ResumeGame()
@@ -90,6 +116,14 @@ public class GameHandler : MonoBehaviour
     public static bool IsGamePaused()
     {
         return Time.timeScale == 0f;
+    }
+
+    //q: can you create the Playewon function here?
+    public static void PlayerWon()
+    {
+        instance.selectedWord.UpdateWordStats(true, Timer.instance.GetTimeLeft());
+        SoundManager.PlaySound(SoundManager.Sound.PlayerWin);
+        GameOverWindow.ShowStatic(GameOverType.Win);
     }
 
     public void InitialWords()
@@ -119,5 +153,17 @@ public class GameHandler : MonoBehaviour
         wordsList.Add(new Word("KEYBOARD", "A device used for typing on a computer."));
         wordsList.Add(new Word("MIRROR", "A reflective surface used for viewing oneself."));
         wordsList.Add(new Word("PENCIL", "A writing tool used to make marks on paper."));
+        wordsList.Add(new Word("BIRD", "A warm-blooded egg-laying vertebrate."));
+        wordsList.Add(new Word("CLOUD", "A visible mass of condensed water vapor floating in the atmosphere."));
+        wordsList.Add(new Word("COMPUTER", "An electronic device used for storing and processing data."));
+        wordsList.Add(new Word("CUP", "A small, open container used for holding liquids."));
+        wordsList.Add(new Word("FISH", "A cold-blooded aquatic vertebrate."));
+        wordsList.Add(new Word("FLOWER", "A plant part that is usually brightly colored."));
+        wordsList.Add(new Word("FOOTBALL", "A game played with a ball and two teams."));
+    }
+
+    private void HideHintText()
+    {
+        hintText.gameObject.SetActive(false);
     }
 }

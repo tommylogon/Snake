@@ -76,8 +76,7 @@ public class LevelGrid
                 player.TryRevealLetter(pickupGameObject.GetComponent<Pickup>().GetLetter());
                 pickupList.Remove(pickupGameObject);
                 Object.Destroy(pickupGameObject);
-                //SpawnFood();
-                Score.AddScore();
+                
                 return true;
             }
         

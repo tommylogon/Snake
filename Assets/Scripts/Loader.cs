@@ -25,9 +25,9 @@ public static class Loader
         };
 
         SceneManager.LoadScene(Scene.Loading.ToString());
+        Time.timeScale = 1f;
 
-        
-        
+
     }
     public static void LoaderCallback()
     {

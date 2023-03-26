@@ -20,6 +20,8 @@ namespace CodeMonkey.MonoBehaviours {
      * Script to handle Camera Movement and Zoom
      * Place on Camera GameObject
      * */
+
+    
     public class CameraFollow : MonoBehaviour {
 
         public static CameraFollow Instance { get; private set; }

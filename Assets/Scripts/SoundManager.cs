@@ -10,6 +10,7 @@ public static class SoundManager
         PayerMove,
         PlayerPickup,
         PlayerDie,
+        PlayerWin,
         ButtonHover,
         ButtonClick
     }

@@ -10,10 +10,7 @@ public class GameOverWindow : MonoBehaviour
     private static GameOverWindow instance;
     
     [SerializeField]
-    private GameObject newHighscoreText;
-    
-    [SerializeField]
-    private GameObject timeoutText;
+    private GameObject gameStateText;
     
     [SerializeField]
     private TextMeshProUGUI highscoreText;
@@ -22,47 +19,71 @@ public class GameOverWindow : MonoBehaviour
     private TextMeshProUGUI scoreText;
     
     [SerializeField]
-    private Button_UI retryBtn;
+    private Button_UI continueBtn;
+
+    private Button_UI MainMenuBtn;
+
+    public enum GameOverType
+    {
+        NewHighscore,
+        TimedOut,
+        Win
+    }
 
     private void Awake()
     {
         instance = this;
-        if (retryBtn == null) 
+        if (continueBtn == null) 
         {
-            retryBtn = transform.Find("retryBtn").GetComponent<Button_UI>();
+            continueBtn = transform.Find("continueBtn").GetComponent<Button_UI>();
         }
-        if (newHighscoreText == null)
+        if (MainMenuBtn == null)
         {
-            newHighscoreText = transform.Find("newHighscoreText").gameObject;
+            MainMenuBtn = transform.Find("MainMenuBtn").GetComponent<Button_UI>();
+        }
+        if (gameStateText == null)
+        {
+            gameStateText = transform.Find("newHighscoreText").gameObject;
         }
 
         if (scoreText == null)
         {
             scoreText = transform.Find("scoreText").GetComponent<TextMeshProUGUI>();
         }
-        if (newHighscoreText == null)
+        if (gameStateText == null)
         {
             highscoreText = transform.Find("highscoreText").GetComponent<TextMeshProUGUI>();
         }
-        if(timeoutText == null)
-        {
-            timeoutText = transform.Find("timeoutText").gameObject;
-        }
 
-        retryBtn.ClickFunc = () => {
+        continueBtn.ClickFunc = () => {
+            Loader.Load(Loader.Scene.Medium);
+        };
+        MainMenuBtn.ClickFunc = () => {
             Loader.Load(Loader.Scene.MainMenu);
         };
 
         Hide();
     }
 
-    private void Show(bool isNewHighscore, bool isTimedOut)
+    private void Show(GameOverType gameOverType)
     {
         gameObject.SetActive(true);
-
-
-        newHighscoreText.SetActive(isNewHighscore);
-        timeoutText.SetActive(isTimedOut);
+       
+        switch (gameOverType)
+        {
+            case GameOverType.NewHighscore:
+                gameStateText.SetActive(true);
+                gameStateText.GetComponent<TextMeshProUGUI>().text = "NEW HIGHSCORE";
+                break;
+            case GameOverType.TimedOut:
+                gameStateText.SetActive(true);
+                gameStateText.GetComponent<TextMeshProUGUI>().text = "TIMED OUT";
+                break;
+            case GameOverType.Win:
+                gameStateText.SetActive(true);
+                gameStateText.GetComponent<TextMeshProUGUI>().text = "YOU WIN";
+                break;
+        }
         
         scoreText.text = Score.GetScore().ToString();
         
@@ -75,9 +96,10 @@ public class GameOverWindow : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public static void ShowStatic(bool isnewHighscore, bool isTimedOut)
-    {
 
-        instance.Show(isnewHighscore, isTimedOut);
+    public static void ShowStatic(GameOverType gameOverType)
+    {
+        instance.Show(gameOverType);
     }
+
 }
