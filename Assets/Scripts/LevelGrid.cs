@@ -72,7 +72,7 @@ public class LevelGrid
         pickupGameObject = GetPickupFromPlayerPosition(PlayerGridposition);
             if (pickupGameObject != null)
             {
-            
+                
                 player.TryRevealLetter(pickupGameObject.GetComponent<Pickup>().GetLetter());
                 pickupList.Remove(pickupGameObject);
                 Object.Destroy(pickupGameObject);

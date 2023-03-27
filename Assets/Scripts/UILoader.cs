@@ -5,15 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class UILoader : MonoBehaviour
 {
-    public string uiSceneName = "UI";
+    [SerializeField]
+    private GameObject UIPrefab;
+    public GameObject loadedUI;
 
-    void Start()
+    
+    public void SetUpUI()
     {
-        SceneManager.LoadScene(uiSceneName, LoadSceneMode.Additive);
+        loadedUI = Instantiate(UIPrefab);
     }
 
-    void OnDestroy()
-    {
-        SceneManager.UnloadSceneAsync(uiSceneName);
-    }
 }

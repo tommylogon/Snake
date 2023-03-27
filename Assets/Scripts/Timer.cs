@@ -11,7 +11,7 @@ public class Timer : MonoBehaviour
     public event EventHandler OnTimeOut;
 
     [SerializeField] private float initialTime = 60f;
-    [SerializeField] private float timeToAdd = 10f;
+
     [SerializeField] private TextMeshProUGUI timerText = null;
 
     private float timeLeft = 0f;
@@ -42,11 +42,9 @@ public class Timer : MonoBehaviour
             return;
         }
         timeLeft -= Time.deltaTime;
-        int minutes = Mathf.FloorToInt(timeLeft / 60);
-        int seconds = Mathf.FloorToInt(timeLeft % 60);
-        int milliseconds = Mathf.FloorToInt((timeLeft - Mathf.Floor(timeLeft)) * 1000f);
+        ;
 
-        timerText.text = string.Format("{0:00}:{1:00}.{2:000}", minutes, seconds, milliseconds);
+        timerText.text = FormatTime();
 
 
         if (timeLeft <= 0)
@@ -59,27 +57,33 @@ public class Timer : MonoBehaviour
 
 
     }
-    public void AddTime()
+
+    public string FormatTime()
     {
-        initialTime += timeToAdd;
+        int minutes = Mathf.FloorToInt(timeLeft / 60);
+        int seconds = Mathf.FloorToInt(timeLeft % 60);
+        int milliseconds = Mathf.FloorToInt((timeLeft - Mathf.Floor(timeLeft)) * 1000f);
+        return string.Format("{0:00}:{1:00}.{2:000}", minutes, seconds, milliseconds);
     }
-
-    public bool IsTimedOut()
+    public string FormatTime(float timeToFormat)
     {
-        return isTimeOut;
+        int minutes = Mathf.FloorToInt(timeToFormat / 60);
+        int seconds = Mathf.FloorToInt(timeToFormat % 60);
+        int milliseconds = Mathf.FloorToInt((timeToFormat - Mathf.Floor(timeToFormat)) * 1000f);
+        return string.Format("{0:00}:{1:00}.{2:000}", minutes, seconds, milliseconds);
     }
 
-    public void PauseTimer(bool state)
-    {
-        isPaused = state;
-    }
+    public void AddTime(float timeToAdd) { timeLeft += timeToAdd; }
+    public void RemoveTime(float timeToRemove) { timeLeft -= timeToRemove; }
+
+    public bool IsTimedOut() { return isTimeOut; }
+
+    public void PauseTimer(bool state) { isPaused = state; }
 
 
-    public float GetTimeLeft()
-    { 
-        return timeLeft; 
-    }
+    public float GetTimeLeft() { return timeLeft; }
 
+    public void SetInitialTime(float time) { initialTime = time; }
 
 
 

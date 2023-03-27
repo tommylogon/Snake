@@ -45,7 +45,8 @@ public class ScoreWindow : MonoBehaviour
     private void UpdateHighscore()
     {
         int highscore = Score.GetHighscore();
-        highScoreText.text = "HIGHSCORE\n" + highscore.ToString();
+        string time = Timer.instance.FormatTime(GameHandler.instance.GetCurrentWord().GetTime());
+        highScoreText.text = "HIGHSCORE\n" + highscore.ToString() + "\r\n" + time;
     }
 
     public static void HideStatic()

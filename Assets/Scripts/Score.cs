@@ -6,15 +6,6 @@ using UnityEngine;
 public static class Score 
 {
 
-    //q:i want to make it so that the hightscore is a combination of the current word, and the time left.
-    //a:   you can make a new class that holds the score and the time left, and then make a list of those classes, a
-    //nd then sort the list by score, and then set the highscore to the first item in the list.
-
-
-
-
-   
-
     public static event EventHandler OnHighscoreChanged;
     private static int score;
     private static float timeLeft;
@@ -31,26 +22,37 @@ public static class Score
 
     public static void AddScore()
     {
+        SoundManager.PlaySound(SoundManager.Sound.PlayerPickup);
         score += 100;
+    }
+    public static void RemoveScore()
+    {
+        SoundManager.PlaySound(SoundManager.Sound.PickupWrong);
+        score -= 50;
+
     }
     public static int GetHighscore()
     {
-        return PlayerPrefs.GetInt("highscore", 0);
+        return GameHandler.instance.GetCurrentWord().GetScore();
+
     }
     public static bool TrySetNewHighscore()
     {
-        return TrySetNewHighscore(score);
+        return TrySetNewHighscore(score, timeLeft);
     }
-    public static bool TrySetNewHighscore(int score)
+    public static bool TrySetNewHighscore(int score, float time)
     {
-        int highscore = GetHighscore();
-        if(score > highscore)
+        int oldScore = GameHandler.instance.GetCurrentWord().GetScore();
+        float oldTime = GameHandler.instance.GetCurrentWord().GetTime();
+        if (score > oldScore || time > oldTime)
         {
-            PlayerPrefs.SetInt("highscore", score);
+            
             if (OnHighscoreChanged != null) OnHighscoreChanged(null, EventArgs.Empty);
             PlayerPrefs.Save();
             return true;
         }
         return false;
     }
+
+
 }

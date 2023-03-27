@@ -8,23 +8,31 @@ public class Word
     string hint;
     bool finished;
     float time;
+    int score;
+    string language;
+    int difficulty;
 
-    public Word(string newletters, string desc)
+    public Word(string newletters, string desc, string newLanguage, int newDifficulty)
     {
         letters = newletters;
         hint = desc;
         finished = false;
-        time = 0;
-
+        time = letters.Length;
+        language = newLanguage;
+        difficulty = newDifficulty;
 
     }
 
-    public void UpdateWordStats(bool isFinished, float newTime)
+    public void UpdateWordStats(bool isFinished, float newTime, int newScore)
     {
         finished = isFinished;
         if (newTime > time)
         {
             time = newTime;
+        }
+        if(newScore > score)
+        {
+            score = newScore;
         }
 
     }
@@ -42,4 +50,11 @@ public class Word
     {
         return hint;
     }
+      
+    public bool GetFinished()
+    {
+        return finished;
+    }
+    public int GetScore() { return score; }
+    public float GetTime() { return time; }
 }

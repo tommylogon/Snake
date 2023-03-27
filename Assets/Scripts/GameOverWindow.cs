@@ -85,7 +85,8 @@ public class GameOverWindow : MonoBehaviour
                 break;
         }
         
-        scoreText.text = Score.GetScore().ToString();
+        scoreText.text = "SCORE: " + Score.GetScore().ToString() + "\r\nTime: " + Timer.instance.FormatTime();
+        
         
         highscoreText.text = "HIGHSCORE: " + Score.GetHighscore().ToString();
     }

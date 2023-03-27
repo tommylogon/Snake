@@ -7,12 +7,13 @@ public static class SoundManager
 {
     public enum Sound
     {
-        PayerMove,
+        PlayerMove,
         PlayerPickup,
         PlayerDie,
         PlayerWin,
         ButtonHover,
-        ButtonClick
+        ButtonClick,
+        PickupWrong
     }
 
     public static void PlaySound(Sound sound)

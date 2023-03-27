@@ -45,7 +45,7 @@ public class SnakeController2D : MonoBehaviour
 
     public static SnakeController2D instance;
 
-    public Word currentWord;
+
 
     private void Awake()
     {
@@ -79,11 +79,10 @@ public class SnakeController2D : MonoBehaviour
 
 
     }
-    public void Setup(LevelGrid levelGrid, Word newHiddenWord)
+    public void Setup(LevelGrid levelGrid, Word selectedWord)
     {
         this.levelGrid = levelGrid;
-        currentWord = newHiddenWord;
-        snakeBodySize = currentWord.GetWordLengt();
+        snakeBodySize = selectedWord.GetWordLengt();
     }
     private void HandleGridMovement()
     {
@@ -96,7 +95,7 @@ public class SnakeController2D : MonoBehaviour
 
             ChangeSpeed(false);
 
-            SoundManager.PlaySound(SoundManager.Sound.PayerMove);
+            SoundManager.PlaySound(SoundManager.Sound.PlayerMove);
 
 
             if (playerMovePositionList.Count > 0)
@@ -128,7 +127,7 @@ public class SnakeController2D : MonoBehaviour
 
             if (levelGrid.TrySnakeEatFood(gridPosition))
             {
-                SoundManager.PlaySound(SoundManager.Sound.PlayerPickup);
+
 
 
                 ChangeSpeed(true);
@@ -143,7 +142,7 @@ public class SnakeController2D : MonoBehaviour
 
             if (playerBodyPartList.Count < snakeBodySize)
             {
-                foreach (char c in currentWord.GetWord())
+                foreach (char c in GameHandler.instance.GetSelectedWord().GetWord())
                 {
                     CreatePlayerBodyPart(c);
                 }
@@ -176,28 +175,24 @@ public class SnakeController2D : MonoBehaviour
     {
 
         bool allLettersRevealed = true;
-        bool thisLetterRevealed = false;
-
-
-        //i need to check the playerBodyPartList for all bodyparets that are revealed. some bodyparts have the same letters, but needs to only be counted once. if all letters are revealed we can do the win condition
-
-
+        bool letterWasRevealed = false;
 
 
         foreach (var bodyPart in playerBodyPartList)
         {
-            if (bodyPart.RevealLetter(letter))
+
+
+            if (!letterWasRevealed && bodyPart.RevealLetter(letter))
             {
                 Score.AddScore();
-                thisLetterRevealed = true;
-
-
+                GameHandler.instance.timer.AddTime(5);
+                letterWasRevealed = true;
             }
             if (!bodyPart.LetterIsRevealed())
             {
                 allLettersRevealed = false;
             }
-            
+
         }
 
 
@@ -205,10 +200,15 @@ public class SnakeController2D : MonoBehaviour
         if (allLettersRevealed)
         {
             Timer.instance.PauseTimer(true);
-            GameHandler.PlayerWon();
+            GameHandler.instance.PlayerWon();
 
 
 
+        }
+        if (!letterWasRevealed)
+        {
+            Score.RemoveScore();
+            GameHandler.instance.timer.RemoveTime(5);
         }
 
     }
