@@ -43,7 +43,27 @@ public class GameHandler : MonoBehaviour
 
         instance = this;       
         pickedUpLetterList = new List<char>();
-        wordsList = new List<Word>(SeedData.InitialWords());
+        LoadWordsList();
+        
+        if(wordsList != null)
+        {
+            foreach(Word word in SeedData.InitialWords()) 
+            {
+                
+                if (!wordsList.Contains(word))
+                {
+                    //The word might not always be the exact same, but the words letter should be the same all time.
+                    Debug.Log("new word added");
+                }
+            }
+        }
+        else
+        {
+            wordsList = new List<Word>(SeedData.InitialWords());
+        }
+
+
+        
 
 
         Score.InitializeStatic();
@@ -60,8 +80,8 @@ public class GameHandler : MonoBehaviour
 
         levelGrid = new LevelGrid(gridSize, gridSize);
 
-        int selectedWordIndex = UnityEngine.Random.Range(0, wordsList.Count);
-        ;
+        selectedWordIndex = UnityEngine.Random.Range(0, wordsList.Count);
+        
 
        
         player.Setup(levelGrid, wordsList[selectedWordIndex]);
@@ -134,7 +154,7 @@ public class GameHandler : MonoBehaviour
         
         instance.wordsList[selectedWordIndex].UpdateWordStats(true, Timer.instance.GetTimeLeft(), Score.GetScore());
         SoundManager.PlaySound(SoundManager.Sound.PlayerWin);
-        GameOverWindow.ShowStatic(GameOverType.Win);
+        ShowStatic(GameOverType.Win);
         SaveWordsList();
     }
 
@@ -163,11 +183,13 @@ public class GameHandler : MonoBehaviour
     public void SaveWordsList()
     {
         string json = JsonUtility.ToJson(wordsList);
-        PlayerPrefs.SetString("WordList", json);
+        PlayerPrefs.SetString("wordsList", json);
+        PlayerPrefs.Save();
+            
     }
-    public void LoadWordList()
+    public void LoadWordsList()
     {
-        string json = PlayerPrefs.GetString("WordList");
+        string json = PlayerPrefs.GetString("wordsList");
 
         
         if(wordsList is null)

@@ -46,8 +46,8 @@ public static class Score
         float oldTime = GameHandler.instance.GetCurrentWord().GetTime();
         if (score > oldScore || time > oldTime)
         {
-            
-            if (OnHighscoreChanged != null) OnHighscoreChanged(null, EventArgs.Empty);
+
+            OnHighscoreChanged?.Invoke(null, EventArgs.Empty);
             PlayerPrefs.Save();
             return true;
         }

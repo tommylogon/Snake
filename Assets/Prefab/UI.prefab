@@ -1488,7 +1488,7 @@ MonoBehaviour:
   gameStateText: {fileID: 5829044539742699015}
   highscoreText: {fileID: 5829044539816338627}
   scoreText: {fileID: 5829044540718335719}
-  continueBtn: {fileID: 0}
+  continueBtn: {fileID: 5829044540000590594}
 --- !u!1 &5829044540108708957
 GameObject:
   m_ObjectHideFlags: 0

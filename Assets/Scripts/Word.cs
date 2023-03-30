@@ -57,4 +57,20 @@ public class Word
     }
     public int GetScore() { return score; }
     public float GetTime() { return time; }
+
+    public override bool Equals(object obj)
+    {
+        if (obj == null || !(obj is Word))
+        {
+            return false;
+        }
+
+        Word other = (Word)obj;
+        return letters == other.letters;
+    }
+
+    public override int GetHashCode()
+    {
+        return letters.GetHashCode();
+    }
 }
