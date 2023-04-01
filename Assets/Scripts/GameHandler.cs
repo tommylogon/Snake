@@ -7,6 +7,7 @@ using System;
 using TMPro;
 using static GameOverWindow;
 
+[Serializable]
 public class GameHandler : MonoBehaviour
 {
     public static GameHandler instance;
@@ -19,13 +20,11 @@ public class GameHandler : MonoBehaviour
 
     private LevelGrid levelGrid;
 
-    
 
-    
-    private List<Word> wordsList;
 
-    
-   
+
+    [SerializeField] public List<Word> wordsList;
+
     private int selectedWordIndex;
 
     private List<char> pickedUpLetterList;
@@ -43,9 +42,11 @@ public class GameHandler : MonoBehaviour
 
         instance = this;       
         pickedUpLetterList = new List<char>();
+
+        
         LoadWordsList();
         
-        if(wordsList != null)
+        if(wordsList != null || wordsList.Count == 0)
         {
             foreach(Word word in SeedData.InitialWords()) 
             {
@@ -53,6 +54,7 @@ public class GameHandler : MonoBehaviour
                 if (!wordsList.Contains(word))
                 {
                     //The word might not always be the exact same, but the words letter should be the same all time.
+                    wordsList.Add(word);
                     Debug.Log("new word added");
                 }
             }
@@ -77,6 +79,7 @@ public class GameHandler : MonoBehaviour
     void Start()
     {
         Debug.Log("Gamehandler.start");
+
 
         levelGrid = new LevelGrid(gridSize, gridSize);
 
@@ -182,21 +185,19 @@ public class GameHandler : MonoBehaviour
 
     public void SaveWordsList()
     {
-        string json = JsonUtility.ToJson(wordsList);
+        WordListWrapper wrapper = new WordListWrapper();
+        wrapper.wordsList = wordsList;
+        string json = JsonUtility.ToJson(wrapper);
         PlayerPrefs.SetString("wordsList", json);
         PlayerPrefs.Save();
-            
+
     }
     public void LoadWordsList()
     {
         string json = PlayerPrefs.GetString("wordsList");
+        WordListWrapper wrapper = JsonUtility.FromJson<WordListWrapper>(json);
+        if(wrapper != null) wordsList = wrapper.wordsList;
 
-        
-        if(wordsList is null)
-        {
-            wordsList = JsonUtility.FromJson<List<Word>>(json);
-        }
-        
     }
 
     public Word GetCurrentWord()
@@ -209,4 +210,10 @@ public class GameHandler : MonoBehaviour
         
     }
     
+}
+
+[System.Serializable]
+public class WordListWrapper
+{
+    public List<Word> wordsList;
 }

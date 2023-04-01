@@ -1,16 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class Word 
 {
-    string letters;
-    string hint;
-    bool finished;
-    float time;
-    int score;
-    string language;
-    int difficulty;
+    public string letters;
+    public string hint;
+    public bool finished;
+    public float time;
+    public int score;
+    public string language;
+    public int difficulty;
 
     public Word(string newletters, string desc, string newLanguage, int newDifficulty)
     {
