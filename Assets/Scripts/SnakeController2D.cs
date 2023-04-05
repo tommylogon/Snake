@@ -62,8 +62,23 @@ public class SnakeController2D : MonoBehaviour
         state = State.Alive;
 
 
+
+
     }
 
+    private void Start()
+    {
+        Timer.instance.OnTimeOut += Instance_OnTimeOut;
+    }
+    private void OnDisable()
+    {
+        Timer.instance.OnTimeOut -= Instance_OnTimeOut;
+    }
+
+    private void Instance_OnTimeOut(object sender, EventArgs e)
+    {
+        PlayerDied();
+    }
 
     void Update()
     {
@@ -185,7 +200,7 @@ public class SnakeController2D : MonoBehaviour
             if (!letterWasRevealed && bodyPart.RevealLetter(letter))
             {
                 Score.AddScore();
-                GameHandler.instance.timer.AddTime(5);
+                Timer.instance.AddTime(5);
                 letterWasRevealed = true;
             }
             if (!bodyPart.LetterIsRevealed())
@@ -199,8 +214,10 @@ public class SnakeController2D : MonoBehaviour
 
         if (allLettersRevealed)
         {
-            Timer.instance.PauseTimer(true);
+            
             GameHandler.instance.PlayerWon();
+            state = State.Dead;
+
 
 
 
@@ -208,7 +225,7 @@ public class SnakeController2D : MonoBehaviour
         if (!letterWasRevealed)
         {
             Score.RemoveScore();
-            GameHandler.instance.timer.RemoveTime(5);
+            Timer.instance.RemoveTime(5);
         }
 
     }

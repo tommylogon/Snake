@@ -14,10 +14,10 @@ public class Timer : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI timerText = null;
 
-    private float timeLeft = 0f;
-    private bool isTimeOut = false;
+    private static float timeLeft = 0f;
+    private static bool isTimeOut = false;
 
-    private bool isPaused = false;
+    private static bool isPaused = false;
 
     private void Awake()
     {
@@ -28,8 +28,9 @@ public class Timer : MonoBehaviour
     {
 
 
-
-        timeLeft = initialTime;
+        isPaused=false; 
+        isTimeOut=false;
+        timeLeft = instance.initialTime;
 
 
     }
@@ -60,20 +61,26 @@ public class Timer : MonoBehaviour
 
     public string FormatTime()
     {
-        int minutes = Mathf.FloorToInt(timeLeft / 60);
-        int seconds = Mathf.FloorToInt(timeLeft % 60);
-        int milliseconds = Mathf.FloorToInt((timeLeft - Mathf.Floor(timeLeft)) * 1000f);
-        return string.Format("{0:00}:{1:00}.{2:000}", minutes, seconds, milliseconds);
+        return FormatTime(timeLeft);
     }
+
     public string FormatTime(float timeToFormat)
     {
         int minutes = Mathf.FloorToInt(timeToFormat / 60);
         int seconds = Mathf.FloorToInt(timeToFormat % 60);
         int milliseconds = Mathf.FloorToInt((timeToFormat - Mathf.Floor(timeToFormat)) * 1000f);
+        if(timeLeft <= 0)
+        {
+            return "00:00:000";
+        }
         return string.Format("{0:00}:{1:00}.{2:000}", minutes, seconds, milliseconds);
     }
 
-    public void AddTime(float timeToAdd) { timeLeft += timeToAdd; }
+    public void AddTime(float timeToAdd) 
+    { 
+        timeLeft += timeToAdd;
+        timerText.text = FormatTime();
+    }
     public void RemoveTime(float timeToRemove) { timeLeft -= timeToRemove; }
 
     public bool IsTimedOut() { return isTimeOut; }

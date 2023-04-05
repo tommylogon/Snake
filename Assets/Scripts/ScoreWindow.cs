@@ -29,8 +29,16 @@ public class ScoreWindow : MonoBehaviour
         
 
         Score.OnHighscoreChanged += Score_OnHighscoreChanged;
-        UpdateHighscore();
+        
 
+    }
+    private void Start()
+    {
+        UpdateHighscore();
+    }
+    private void OnDisable()
+    {
+        Score.OnHighscoreChanged -= Score_OnHighscoreChanged;
     }
 
     private void Score_OnHighscoreChanged(object sender, System.EventArgs e)

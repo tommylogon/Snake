@@ -25,6 +25,7 @@ public class GameHandler : MonoBehaviour
 
     [SerializeField] public List<Word> wordsList;
 
+    [SerializeField]
     private int selectedWordIndex;
 
     private List<char> pickedUpLetterList;
@@ -32,7 +33,7 @@ public class GameHandler : MonoBehaviour
     [SerializeField]
     private TypewriterEffect hintTypeWriter;
 
-    public Timer timer;
+
 
 
 
@@ -71,7 +72,7 @@ public class GameHandler : MonoBehaviour
         Score.InitializeStatic();
 
         GetComponent<UILoader>().SetUpUI();
-        timer = GetComponent<UILoader>().loadedUI.GetComponentInChildren<Timer>();
+       
         
         
     }
@@ -92,7 +93,7 @@ public class GameHandler : MonoBehaviour
 
         hintTypeWriter.fullText = wordsList[selectedWordIndex].GetHint();
         Invoke("HideHintText", 10);
-        timer.SetInitialTime(wordsList[selectedWordIndex].GetWordLengt() * 10);
+        Timer.instance.SetInitialTime(wordsList[selectedWordIndex].GetWordLengt() * 10);
 
     }
 
@@ -154,7 +155,7 @@ public class GameHandler : MonoBehaviour
    
     public  void PlayerWon()
     {
-        
+        Timer.instance.PauseTimer(true);
         instance.wordsList[selectedWordIndex].UpdateWordStats(true, Timer.instance.GetTimeLeft(), Score.GetScore());
         SoundManager.PlaySound(SoundManager.Sound.PlayerWin);
         ShowStatic(GameOverType.Win);
