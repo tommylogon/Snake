@@ -188,7 +188,7 @@ public class SnakeController2D : MonoBehaviour
 
     public void TryRevealLetter(char letter)
     {
-
+        GameHandler.instance.AddPickedUpLetter(letter);
         bool allLettersRevealed = true;
         bool letterWasRevealed = false;
 
@@ -296,6 +296,10 @@ public class SnakeController2D : MonoBehaviour
             PlayerBodyParts playerBodyPart = playerBodyPartObject.GetComponent<PlayerBodyParts>();
             playerBodyPart.Setup(playerBodyPartList.Count, letter);
             playerBodyPartList.Add(playerBodyPart);
+        }
+        else
+        {
+            Debug.Log("Asset missing!");
         }
 
     }

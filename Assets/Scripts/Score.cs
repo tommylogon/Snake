@@ -25,6 +25,11 @@ public static class Score
         SoundManager.PlaySound(SoundManager.Sound.PlayerPickup);
         score += 100;
     }
+    public static void AddScore(int scoreToAdd)
+    {
+        SoundManager.PlaySound(SoundManager.Sound.PlayerPickup);
+        score += scoreToAdd;
+    }
     public static void RemoveScore()
     {
         SoundManager.PlaySound(SoundManager.Sound.PickupWrong);

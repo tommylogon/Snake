@@ -53,7 +53,7 @@ public class ScoreWindow : MonoBehaviour
     private void UpdateHighscore()
     {
         int highscore = Score.GetHighscore();
-        string time = Timer.instance.FormatTime(GameHandler.instance.GetCurrentWord().GetTime());
+        string time = Timer.FormatTime(GameHandler.instance.GetCurrentWord().GetTime());
         highScoreText.text = "HIGHSCORE\n" + highscore.ToString() + "\r\n" + time;
     }
 

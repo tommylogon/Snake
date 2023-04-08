@@ -8,7 +8,7 @@ public class Word
 {
     public string letters;
     public string hint;
-    public bool finished;
+    public bool isFinished;
     public float time;
     public int score;
     public string language;
@@ -18,7 +18,7 @@ public class Word
     {
         letters = newletters;
         hint = desc;
-        finished = false;
+        isFinished = false;
         time = letters.Length;
         language = newLanguage;
         difficulty = newDifficulty;
@@ -27,7 +27,7 @@ public class Word
 
     public void UpdateWordStats(bool isFinished, float newTime, int newScore)
     {
-        finished = isFinished;
+        this.isFinished = isFinished;
         if (newTime > time)
         {
             time = newTime;
@@ -36,6 +36,12 @@ public class Word
         {
             score = newScore;
         }
+
+    }
+    public void UpdateWordStats(bool isFinished)
+    {
+        this.isFinished = isFinished;
+        
 
     }
 
@@ -55,7 +61,7 @@ public class Word
       
     public bool GetFinished()
     {
-        return finished;
+        return isFinished;
     }
     public int GetScore() { return score; }
     public float GetTime() { return time; }

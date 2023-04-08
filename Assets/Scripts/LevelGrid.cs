@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+using static GameAssets;
 
 public class LevelGrid 
 {
@@ -37,7 +37,7 @@ public class LevelGrid
         while (spawnedPickUps < dudsToSpawn)
         {
              
-            SpawnFood(GameAssets.instance.RandomLetter());
+            SpawnFood(instance.RandomLetter());
             spawnedPickUps++;
         }
 
@@ -50,15 +50,13 @@ public class LevelGrid
         do
         {
             pickupGridPosition = new Vector2Int(Random.Range(0, width), Random.Range(0, height));
-        } while (player.GetFullSnakeGridPositionList().IndexOf(pickupGridPosition) != -1 || GetFullPickupGridPositionList().IndexOf(pickupGridPosition) != -1);
+        } while (player.GetFullSnakeGridPositionList().IndexOf(pickupGridPosition) != -1 || GetFullPickupGridPositionList().IndexOf(pickupGridPosition) != -1 || pickupGridPosition.y == height/2);
 
 
        pickupGameObject = GameAssets.Instantiate(GameAssets.instance.pickupPrefab);
        Pickup pickup = pickupGameObject.GetComponent<Pickup>();
        pickup.SetLetter(letter);
        pickup.setPos(pickupGridPosition);
-        //pickupGameObject = new GameObject("Puckup", typeof(SpriteRenderer));
-        //pickupGameObject.GetComponent<SpriteRenderer>().sprite = GameAssets.instance.foodSprite;
 
        pickupGameObject.transform.position = new Vector3(pickupGridPosition.x, pickupGridPosition.y);
 

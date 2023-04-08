@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,29 +40,50 @@ public static class SeedData
         wordsList.Add(new Word("FLOWER", "A plant part that is usually brightly colored.", "EN", 1));
         wordsList.Add(new Word("FOOTBALL", "A game played with a ball and two teams.", "EN", 1));
 
-        //wordsList.Add(new Word("KATT", "Et mykt og pelskledd dyr som ofte holdes som kjÊledyr.", "NO", 1));
-        //wordsList.Add(new Word("BOKS", "En beholder brukt til Â oppbevare gjenstander eller mat.", "NO", 1));
-        //wordsList.Add(new Word("BIEN", "En flygende insekt som lager honning.", "NO", 1));
-        //wordsList.Add(new Word("KANIN", "En myk og lodden hare som ofte holdes som kjÊledyr.", "NO", 1));
-        //wordsList.Add(new Word("KAKE", "En s¯t bakverk som vanligvis serveres til dessert.", "NO", 1));
-        //wordsList.Add(new Word("FUGL", "En varmblodig, eggleggende virveldyr som har fjÊr.", "NO", 2));
-        //wordsList.Add(new Word("SKOG", "Et sted med mange trÊr og andre planter.", "NO", 2));
-        //wordsList.Add(new Word("BILDE", "En visuell representasjon av noe eller noen.", "NO", 1));
-        //wordsList.Add(new Word("TREHUS", "En bygning laget av tre som brukes som bolig.", "NO", 1));
-        //wordsList.Add(new Word("ELG", "En stor planteetende hjort med store gevirer.", "NO", 1));
-        //wordsList.Add(new Word("SYKKEL", "Et tohjulet kj¯ret¯y som drives av pedaler.", "NO", 1));
-        //wordsList.Add(new Word("B∆R", "En liten frukt som er vanligvis r¯d eller blÂ.", "NO", 1));
-        //wordsList.Add(new Word("VINDU", "En Âpning i veggen pÂ en bygning for lys og luft.", "NO", 1));
-        //wordsList.Add(new Word("GRÿNNSAK", "En spiselig plante eller del av en plante som ikke er en frukt eller et korn.", "NO", 2));
-        //wordsList.Add(new Word("KOPP", "En beholder brukt til Â drikke vÊsker.", "NO", 1));
-        //wordsList.Add(new Word("SJÿ", "En stor kropp av saltvann.", "NO", 2));
-        //wordsList.Add(new Word("MAT", "Enhver substans som spises for nÊring.", "NO", 1));
-        //wordsList.Add(new Word("KAMERA", "En enhet som brukes til Â ta fotografier eller video.", "NO", 2));
-        //wordsList.Add(new Word("SOL", "En stjerne som gir lys og varme.", "NO", 1));
-        //wordsList.Add(new Word("STOL", "Et m¯bel brukt til Â sitte pÂ.", "NO", 1));
-        //wordsList.Add(new Word("TV", "En elektronisk enhet som brukes til Â vise bilder og lyd.", "NO", 1));
-        //wordsList.Add(new Word("FJELL", "En stor naturlig opph¯yning pÂ jordoverflaten.", "NO", 2));
-        //wordsList.Add(new Word("MUSIKK", "En kunstform som bruker lyd og rytme.", "NO", 2));
+        wordsList.Add(new Word("KATT", "A soft and furry animal often kept as a pet.", "NO", 1));
+        wordsList.Add(new Word("BOKS", "A container used to store items or food.", "NO", 1));
+        wordsList.Add(new Word("BIEN", "A flying insect that makes honey.", "NO", 1));
+        wordsList.Add(new Word("KANIN", "A soft and fluffy hare often kept as a pet.", "NO", 1));
+        wordsList.Add(new Word("KAKE", "A sweet pastry usually served for dessert.", "NO", 1));
+        wordsList.Add(new Word("FUGL", "A warm-blooded, egg-laying vertebrate that has feathers.", "NO", 2));
+        wordsList.Add(new Word("SKOG", "A place with many trees and other plants.", "NO", 2));
+        wordsList.Add(new Word("BILDE", "A visual representation of something or someone.", "NO", 1));
+        wordsList.Add(new Word("TREHUS", "A building made of wood that is used as a residence.", "NO", 1));
+        wordsList.Add(new Word("ELG", "A large herbivorous deer with large antlers.", "NO", 1));
+        wordsList.Add(new Word("SYKKEL", "A two-wheeled vehicle powered by pedals.", "NO", 1));
+        wordsList.Add(new Word("B√ÜR", "A small fruit that is usually red or blue.", "NO", 1));
+        wordsList.Add(new Word("VINDU", "An opening in the wall of a building for light and air.", "NO", 1));
+        wordsList.Add(new Word("GR√òNNSAK", "An edible plant or part of a plant that is not a fruit or grain.", "NO", 2));
+        wordsList.Add(new Word("KOPP", "A container used for drinking liquids.", "NO", 1));
+        wordsList.Add(new Word("SJ√ò", "A large body of saltwater.", "NO", 2));
+        wordsList.Add(new Word("MAT", "Any substance that is eaten for nourishment.", "NO", 1));
+        wordsList.Add(new Word("KAMERA", "A device used for taking photographs or videos.", "NO", 2));
+        wordsList.Add(new Word("SOL", "A star that provides light and warmth.", "NO", 1));
+        wordsList.Add(new Word("STOL", "A piece of furniture used for sitting on.", "NO", 1));
+        wordsList.Add(new Word("TV", "An electronic device used for displaying images and sound.", "NO", 1));
+        wordsList.Add(new Word("FJELL", "A large natural elevation on the earth's surface.", "NO", 2));
+        wordsList.Add(new Word("MUSIKK", "An art form that uses sound and rhythm.", "NO", 2));
+
+        wordsList.Add(new Word("HAUS", "German word for 'house'.", "DE", 1));
+        wordsList.Add(new Word("BROT", "German word for 'bread'.", "DE", 1));
+        wordsList.Add(new Word("BAUM", "German word for 'tree'.", "DE", 1));
+
+        wordsList.Add(new Word("VOITURE", "French word for 'car'.", "FR", 1));
+        wordsList.Add(new Word("LIVRE", "French word for 'book'.", "FR", 1));
+        wordsList.Add(new Word("CHAT", "French word for 'cat'.", "FR", 1));
+
+        wordsList.Add(new Word("CASA", "Spanish word for 'house'.", "ES", 1));
+        wordsList.Add(new Word("LIBRO", "Spanish word for 'book'.", "ES", 1));
+        wordsList.Add(new Word("GATO", "Spanish word for 'cat'.", "ES", 1));
+
+        //wordsList.Add(new Word("ÂÆ∂Êóè", "Japanese word for 'family'.", "JA", 1));
+        //wordsList.Add(new Word("Â§™ÈôΩ", "Japanese word for 'sun'.", "JA", 1));
+        //wordsList.Add(new Word("ÂØøÂè∏", "Japanese word for 'sushi'.", "JA", 1));
+
+        wordsList.Add(new Word("‡∏ö‡πâ‡∏≤‡∏ô", "Thai word for 'house'.", "TH", 1));
+        wordsList.Add(new Word("‡∏Ç‡πâ‡∏≤‡∏ß", "Thai word for 'rice'.", "TH", 1));
+        wordsList.Add(new Word("‡∏ä‡πâ‡∏≤‡∏á", "Thai word for 'elephant'.", "TH", 1));
+
 
         return wordsList;
     }

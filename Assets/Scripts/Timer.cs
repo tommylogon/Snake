@@ -64,7 +64,7 @@ public class Timer : MonoBehaviour
         return FormatTime(timeLeft);
     }
 
-    public string FormatTime(float timeToFormat)
+    public static string FormatTime(float timeToFormat)
     {
         int minutes = Mathf.FloorToInt(timeToFormat / 60);
         int seconds = Mathf.FloorToInt(timeToFormat % 60);
