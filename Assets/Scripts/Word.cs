@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GameAssets;
 
 [Serializable]
 public class Word 
@@ -11,10 +12,10 @@ public class Word
     public bool isFinished;
     public float time;
     public int score;
-    public string language;
+    public Language language;
     public int difficulty;
 
-    public Word(string newletters, string desc, string newLanguage, int newDifficulty)
+    public Word(string newletters, string desc, Language newLanguage, int newDifficulty)
     {
         letters = newletters;
         hint = desc;

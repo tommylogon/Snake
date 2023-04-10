@@ -8,7 +8,7 @@ public static class Score
 
     public static event EventHandler OnHighscoreChanged;
     private static int score;
-    private static float timeLeft;
+    
 
     public static void InitializeStatic()
     {
@@ -43,7 +43,7 @@ public static class Score
     }
     public static bool TrySetNewHighscore()
     {
-        return TrySetNewHighscore(score, timeLeft);
+        return TrySetNewHighscore(score, Timer.instance.GetTimeLeft());
     }
     public static bool TrySetNewHighscore(int score, float time)
     {

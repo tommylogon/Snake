@@ -8,14 +8,12 @@ public class GameAssets : MonoBehaviour
    public enum Language
     {
         English,
-        Thai,
-        Chinese,
-        Japanese,
-        Korean,
+        Norwegian,
+        Thai,        
+        Japanese,        
         German,
         Spannish,
-        French,
-        Russian,
+        French      
 
     }
 
@@ -34,16 +32,7 @@ public class GameAssets : MonoBehaviour
     public SoundAudioClip[] soundAudioClipArray;
 
     public char[] alphabet = new char[26];
-    char[] thaiAlphabet = new char[]
-{
-    'ก', 'ข', 'ฃ', 'ค', 'ฅ', 'ฆ', 'ง', 'จ', 'ฉ', 'ช',
-    'ซ', 'ฌ', 'ญ', 'ฎ', 'ฏ', 'ฐ', 'ฑ', 'ฒ', 'ณ', 'ด',
-    'ต', 'ถ', 'ท', 'ธ', 'น', 'บ', 'ป', 'ผ', 'ฝ', 'พ',
-    'ฟ', 'ภ', 'ม', 'ย', 'ร', 'ฤ', 'ล', 'ฦ', 'ว', 'ศ',
-    'ษ', 'ส', 'ห', 'ฬ', 'อ', 'ฮ',
-    'ะ', 'ั', 'า', 'ำ', 'ิ', 'ี', 'ึ', 'ื', 'ุ', 'ู', 'ฤ', 'ฦ'//'ฤๅ',
-                                                           //, 'ฦๅ'
-};
+
 
 
 
@@ -56,20 +45,21 @@ public class GameAssets : MonoBehaviour
             alphabet[i] = (char)('A' + i);
         }
 
-        selectedLanguage = (Language)Enum.Parse(typeof(Language), PlayerPrefs.GetString("Language"));
+        if (PlayerPrefs.HasKey("Language"))
+        {
+            selectedLanguage = (Language)Enum.Parse(typeof(Language), PlayerPrefs.GetString("Language"));
+        }
+        else
+        {
+            selectedLanguage = Language.English;
+        }
     }
 
     public char RandomLetter()
     {
-        switch (selectedLanguage)
-        {
-            case Language.English:
-                return alphabet[UnityEngine.Random.Range(0, alphabet.Length)];
-            case Language.Thai:
-                return thaiAlphabet[UnityEngine.Random.Range(0, thaiAlphabet.Length)];
-            default:
-                return alphabet[UnityEngine.Random.Range(0, alphabet.Length)];
-        }
+        return alphabet[UnityEngine.Random.Range(0, alphabet.Length)];
+
+        
         
     }
 

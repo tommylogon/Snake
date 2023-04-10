@@ -85,7 +85,7 @@ public class GameOverWindow : MonoBehaviour
                 break;
         }
         
-        scoreText.text = "SCORE: " + Score.GetScore().ToString() + "\r\nTime: " + Timer.instance.FormatTime();
+        scoreText.text = "SCORE: " + Score.GetScore().ToString() + "\r\nTime: " + Timer.instance.FormatTime() + "\r\n in order:" + GameHandler.instance.IsWordFinished().ToString();
         
         
         highscoreText.text = "HIGHSCORE: " + Score.GetHighscore().ToString();

@@ -21,6 +21,7 @@ public static class SoundManager
         GameObject soundGameObject = new GameObject("Sound");
         AudioSource audioSource = soundGameObject.AddComponent<AudioSource>();
         audioSource.PlayOneShot(GetAudioClip(sound));
+        audioSource.volume = PlayerPrefs.GetFloat("MasterVolume", 1f);
         Object.Destroy(soundGameObject, 3f);
         if(GameHandler.instance != null)
         {

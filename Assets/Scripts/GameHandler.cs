@@ -6,6 +6,9 @@ using CodeMonkey.Utils;
 using System;
 using TMPro;
 using static GameOverWindow;
+using System.Diagnostics;
+using Debug = UnityEngine.Debug;
+using System.Linq;
 
 [Serializable]
 public class GameHandler : MonoBehaviour
@@ -13,6 +16,7 @@ public class GameHandler : MonoBehaviour
     public static GameHandler instance;
 
     [SerializeField] private  bool RunGame;
+    [SerializeField] private  bool ResetLetterProgress;
 
     [SerializeField]
     private int gridSize = 20;
@@ -35,41 +39,17 @@ public class GameHandler : MonoBehaviour
     [SerializeField]
     private TypewriterEffect hintTypeWriter;
 
-
+    bool wordIsInOrder = true;
 
 
 
     private void Awake()
     {
-        
 
-        instance = this;       
+
+        instance = this;
         pickedUpLetterList = new List<char>();
-
-        
-        LoadWordsList();
-        
-        if(wordsList != null || wordsList.Count == 0)
-        {
-            foreach(Word word in SeedData.InitialWords()) 
-            {
-                
-                if (!wordsList.Contains(word))
-                {
-                    
-                    wordsList.Add(word);
-                    Debug.Log("new word added");
-                }
-            }
-        }
-        else
-        {
-            wordsList = new List<Word>(SeedData.InitialWords());
-        }
-
-
-        
-
+        LoadingWordLogic();
 
         Score.InitializeStatic();
 
@@ -77,10 +57,44 @@ public class GameHandler : MonoBehaviour
         {
             GetComponent<UILoader>().SetUpUI();
         }
-        
-       
-        
-        
+
+
+
+
+    }
+
+    private void LoadingWordLogic()
+    {
+        LoadWordsList();
+
+        if (wordsList != null || wordsList.Count == 0)
+        {
+            foreach (Word word in SeedData.InitialWords())
+            {
+
+                if (!wordsList.Contains(word))
+                {
+
+                    wordsList.Add(word);
+                    Debug.Log("new word added");
+                }
+                else if (wordsList.Contains(word))
+                {
+                    Debug.Log("word already exists");
+                    wordsList[wordsList.IndexOf(word)].language = word.language;
+                    
+                }
+            }
+        }
+        if (ResetLetterProgress)
+        {
+            wordsList = new List<Word>(SeedData.InitialWords());
+            SaveWordsList();
+        }
+        else
+        {
+            
+        }
     }
 
     void Start()
@@ -99,7 +113,9 @@ public class GameHandler : MonoBehaviour
             player.Setup(levelGrid, wordsList[selectedWordIndex]);
             levelGrid.Setup(player, wordsList[selectedWordIndex]);
 
+            hintTypeWriter.language = GameAssets.instance.selectedLanguage;
             hintTypeWriter.fullText = wordsList[selectedWordIndex].GetHint();
+            hintTypeWriter.StartTextWriter();
             Invoke("HideHintText", 10);
             Timer.instance.SetInitialTime(wordsList[selectedWordIndex].GetWordLengt() * 10);
         }
@@ -125,14 +141,17 @@ public class GameHandler : MonoBehaviour
     private void findNextWord()
     {
         bool wordFound=false;
-        if(wordsList.Exists( w => w.isFinished == false))
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+
+        if (wordsList.Exists( w => w.isFinished == false))
         {
             Debug.Log("Not all words completed");
-            while (!wordFound)
+            while (!wordFound && stopwatch.Elapsed.TotalSeconds < 10)
             {
                 selectedWordIndex = UnityEngine.Random.Range(0, wordsList.Count);
 
-                if (!wordsList[selectedWordIndex].isFinished)
+                if (!wordsList[selectedWordIndex].isFinished && wordsList[selectedWordIndex].language == GameAssets.instance.selectedLanguage)
                 wordFound = true;
             }
         }
@@ -141,8 +160,8 @@ public class GameHandler : MonoBehaviour
             Debug.Log("All words completed");
             selectedWordIndex = UnityEngine.Random.Range(0, wordsList.Count);
         }
-        
-        
+        stopwatch.Stop();
+
     }
 
     private void Timer_OnTimeOut(object sender, EventArgs e)
@@ -196,13 +215,17 @@ public class GameHandler : MonoBehaviour
 
         instance.wordsList[selectedWordIndex].UpdateWordStats(true, Timer.instance.GetTimeLeft(), Score.GetScore());
         SoundManager.PlaySound(SoundManager.Sound.PlayerWin);
+        if (Score.TrySetNewHighscore())
+        {
+            ShowStatic(GameOverType.NewHighscore);
+        }
         ShowStatic(GameOverType.Win);
         SaveWordsList();
     }
 
     private int CheckIfWordWasPickedUpInOrder()
     {
-        bool wordIsInOrder = true;
+        
         for (int i = 0; i < pickedUpLetterList.Count; i++)
         {
             if (pickedUpLetterList[i] != wordsList[selectedWordIndex].letters[i])
@@ -269,6 +292,10 @@ public class GameHandler : MonoBehaviour
         int index = wordsList.IndexOf(word);
         instance.wordsList[index].UpdateWordStats(false);
         SaveWordsList();
+    }
+    public bool IsWordFinished()
+    {
+        return wordIsInOrder;
     }
 }
 
